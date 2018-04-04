@@ -1,0 +1,4 @@
+On the command line:
+$ git add .
+$ git commit -m "Description of your commit"
+$ git push
