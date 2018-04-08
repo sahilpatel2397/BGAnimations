@@ -8,6 +8,26 @@ public class BGAnimationsPersistImpl {
 		" the database. Please try the query again.";
 
 	/** Get data from the user table **/
+	
+	// @Stephen
+	public static User getUser(int userId) throws SQLException, RuntimeException {
+		String query = "";
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		User u = null;
+		
+		while(rs.next()) {
+			u = new User(rs.getInt("userId"), rs.getString("firstName"),
+				rs.getString("lastName"), rs.getString("email"),
+				rs.getString("address"), rs.getString("avatarUrl"),
+				rs.getBoolean("isBanned"), rs.getBoolean("isAdmin"));
+		}
+		
+		if (u == null) {
+			throw new RuntimeException(DB_ERR_MSG);
+		} else {
+			return u;
+		}
+	}
 
 	public static void addUser(User u) throws SQLException {
 		String query = "INSERT INTO user " + 
@@ -24,7 +44,9 @@ public class BGAnimationsPersistImpl {
 				"lastName = '"+u.getLastName()+"', "+
 				"email = '"+u.getEmail()+"', "+
 				"address = '"+u.getAddress()+"', "+
-				"avatarUrl = '"+u.getAvatarUrl()+
+				"avatarUrl = '"+u.getAvatarUrl()+"',"+
+				"isBanned= '"+u.getIsBanned()+"', "+
+				"isAdmin = '"+u.getIsAdmin()+
 				"' WHERE userId = '"+u.getUserId()+";";
 				
 		DBAccessInterface.create(query);
@@ -65,101 +87,6 @@ public class BGAnimationsPersistImpl {
 			u.getUserId()+";";
 		DBAccessInterface.create(query);
 	}
-
-	public static String getUserFirstName(User u) 
-		throws SQLException, RuntimeException {
-			
-		String query = "SELECT firstName FROM user WHERE user.userId = " + 
-			u.getUserId()+";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		String result = "";
-		
-		while(rs.next()) {
-			result = rs.getString("firstName");
-		}
-		
-		if (result == "") {
-			throw new RuntimeException(DB_ERR_MSG);
-		} else {
-			return result;	
-		}
-	}
-
-	public static String getUserLastName(User u) 
-		throws SQLException, RuntimeException {
-			
-		String query = "SELECT lastName FROM user WHERE user.userId = " +
-			u.getUserId() + ";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		String result = "";
-		
-		while(rs.next()) {
-			result = rs.getString("lastName");
-		}
-		
-		if (result == "") {
-			throw new RuntimeException(DB_ERR_MSG);
-		} else {
-			return result;	
-		}
-	}
-
-	public static String getUserEmail(User u) 
-		throws SQLException, RuntimeException {
-			
-		String query = "SELECT email FROM user WHERE user.userId = " +
-			u.getUserId() + ";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		String result = "";
-		
-		while(rs.next()) {
-			result = rs.getString("email");
-		}
-		
-		if (result == null) {
-			throw new RuntimeException(DB_ERR_MSG);
-		} else {
-			return result;	
-		}
-	}
-
-	public static String getUserAddress(User u) 
-		throws SQLException, RuntimeException {
-			
-		String query = "SELECT address FROM user WHERE user.userId = " +
-			u.getUserId() + ";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		String result = "";
-		
-		while(rs.next()) {
-			result = rs.getString("address");
-		}
-		
-		if (result == "") {
-			throw new RuntimeException(DB_ERR_MSG);
-		} else {
-			return result;	
-		}
-	}
-
-	public static String getUserAvatarUrl(User u) 
-		throws SQLException, RuntimeException {
-			
-		String query = "SELECT avatarUrl FROM user WHERE user.userId = " +
-			u.getUserId() + ";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		String result = "";
-		
-		while(rs.next()) {
-			result = rs.getString("avatarUrl");
-		}
-		
-		if (result == "") {
-			throw new RuntimeException(DB_ERR_MSG);
-		} else {
-			return result;	
-		}
-	}
 	
 	public static ArrayList<int> getAllAdministrators() throws SQLException {
 		String query = "SELECT userId FROM user WHERE user.isAdmin = TRUE;";
@@ -171,158 +98,7 @@ public class BGAnimationsPersistImpl {
 		}
 		return admins;
 	}
-	
-	public static void setAdministrator(User u) throws SQLException {
-		String query = "UPDATE isAdmin SET isAdmin = TRUE where user.userId = " +
-			u.getUserId()+";";
-		DBAccessInterface.create(query);
-	}
-	
-	public static void removeAdministrator(User u) throws SQLException {
-		String query = "UPDATE isAdmin SET isAdmin = FALSE where user.userId = " +
-			u.getUserId()+";";
-		DbAccessInterface.create(query);
-	}
-	
-	/** Get data from creditcard table **/
-	
-	public static ArrayList<String> getAllCardNums(User u) throws SQLException {
-		String query = "SELECT creditcard FROM creditcard, user WHERE " +
-			"creditcard.user_userId = " + u.getUserId() +";"; 
 		
-		ResultSet rs = DBAccessInterface.retrieve(query);	
-		ArrayList<String> cards = new ArrayList<String>();
-		
-		while(rs.next()) {
-			cards.add(rs.getString("creditcard"));
-		}
-		
-		return cards;
-	}
-	
-	public static String getCardType(User u, Card c) 
-		throws SQLException, RuntimeException {
-			
-		String query = "SELECT type FROM creditcard, user WHERE " +
-			"creditcard.user_userId = " + u.getUserId() + 
-			" AND creditcard.creditcard = " + c.getCreditCardNum()+";";
-		
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		String result = "";
-		
-		while(rs.next()) {
-			result = rs.getString("type");
-		}
-		
-		if (result == "") {
-			throw new RuntimeException(DB_ERR_MSG);
-		} else {
-			return result;	
-		}
-	}
-	
-	public static Date getExpirationDate(Card c) throws SQLException {
-		String query = "SELECT expirationDate FROM creditcard WHERE " + 
-			"creditcard.creditcard = " + c.getCreditCardNum() +";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		Date result = new Date(0);
-		
-		while(rs.next()) {
-			result = rs.getDate("expirationDate");
-		}
-		
-		return result;
-	}
-	
-	public static String getBillingAddress(Card c) 
-		throws SQLException, RuntimeException {
-			
-		String query = "SELECT billingAddress FROM creditcard WHERE " +
-		"creditcard.creditcard = " + c.getCreditCardNum() +";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		String result = "";
-		
-		while(rs.next()) {
-			result = rs.getString("billingAddress");
-		}
-		
-		if (result == "") {
-			throw new RuntimeException(DB_ERR_MSG);
-		} else {
-			return result;	
-		}
-	}
-	
-	public static String int getSecurityCode(Card c) 
-		throws SQLException, RuntimeException {
-			
-		String query = "SELET securityCode FROM creditcard WHERE " + 
-		"creditcard.creditcard = " + c.getCreditCardNum() +";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		String result = "";
-		
-		while(rs.next()) {
-			result = rs.getString("securityCode");
-		}
-		
-		if (result == "") {
-			throw new RuntimeException(DB_ERR_MSG);
-		} else {
-			return result;	
-		}
-	}
-	
-	public static void addCard(User u, Card c) throws SQLException {
-		String query = "INSERT INTO creditcard " + 
-		"(creditcard, type, expirationDate, billingAddress, securityCode, userId)" +
-		" VALUES ('" + c.getCreditCardNum() + "', '" + c.getCardType() + "', '" + 
-		c.getExpirationDate() + "', '" + c.getBillingAddress() + "', '" + 
-		c.getSecurityCode() + "', '" + c.getUserId() + "');";
-		
-		DBAccessInterface.create(query);
-	}
-	
-	public static void removeCard(Card c) throws SQLException {
-		String query = "DELETE FROM creditcard WHERE creditcard.creditcard = " 
-		+ c.getCreditCardNum() + ";";
-		
-		DBAccessInterface.delete(query);
-	}
-	
-	protected static ArrayList<BookingOrder> getAllBookingOrdersWithUser(int userId) 
-		throws SQLException {
-		String query = "SELECT bookingId, date, numTickets, promoCode, subtotal, " +
-		"tax, total, creditcard, user_userId WHERE user_userId = " + userId + ";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		ArrayList<BookingOrder> bo = new ArrayList<BookingOrder>();
-		
-		while(rs.next()) {
-			bo.add(new BookingOrder(rs.getInt("bookingId"), rs.getDate("date"),
-				rs.getInt("numTickets"), rs.getString("promoCode"),
-				rs.getFloat("subtotal"), rs.getFloat("tax"), 
-				rs.getFloat("total"), rs.getString("creditcard"),
-				rs.getInt("user_userId")));
-		}
-		
-		return bo;
-	}
-	
-	protected static ArrayList<Card> getAllCreditCardsWithUser(int userId) 
-		throws SQLException {
-		String query = "SELECT creditcard, type, expirationDate, billingAddress, " +
-		"securityCode, user_userId WHERE user_userId = " + userId + ";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		ArrayList<Card> c = new ArrayList<Card>();
-		
-		while(rs.next()) {
-			c.add(new Card(rs.getString("creditcard"), rs.getString("type"),
-				rs.getString("expirationDate"), rs.getString("billingAddress"),
-				rs.getInt("securityCode")));
-		}
-		
-		return c;
-	}
-	
 	public static ArrayList<User> getAlluserWithoutAdmins() throws SQLException {
 		String query = "SELECT userId, firstName, lastName, email, address, "+
 		"avatarUrl, isBanned, isAdmin FROM user WHERE isAdmin = 0;";
@@ -340,134 +116,108 @@ public class BGAnimationsPersistImpl {
 		
 		return users;
 	}
+	
+	public static void setAdministrator(User u) throws SQLException {
+		String query = "UPDATE isAdmin SET isAdmin = TRUE where user.userId = " +
+			u.getUserId()+";";
+		DBAccessInterface.create(query);
+	}
+	
+	public static void removeAdministrator(User u) throws SQLException {
+		String query = "UPDATE isAdmin SET isAdmin = FALSE where user.userId = " +
+			u.getUserId()+";";
+		DbAccessInterface.create(query);
+	}
+	
+	/** Get data from creditcard table **/
+	
+	// @Stephen
+	public static ArrayList<Card> getAllCardForUser(User u) throws SQLException {
+		String query = "";"
+		ResultSet rs = DBAccessInterface.retrieve(query);	
+		ArrayList<Card> cards = new ArrayList<Card>();
+		
+		while(rs.next()) {
+			cards.add(new Card(rs.getString("creditcard"), rs.getString("type"),
+				rs.getDate("expirationDate"), rs.getString("billingAddress"),
+				rs.getInt("securityCode"), rs.getInt("users_userId")));
+		}
+		
+		return cards;
+	}
+
+	public static void addCard(User u, Card c) throws SQLException {
+		String query = "INSERT INTO creditcard " + 
+		"(creditcard, type, expirationDate, billingAddress, securityCode, userId)" +
+		" VALUES ('" + c.getCreditCardNum() + "', '" + c.getCardType() + "', '" + 
+		c.getExpirationDate() + "', '" + c.getBillingAddress() + "', '" + 
+		c.getSecurityCode() + "', '" + c.getUserId() + "');";
+		
+		DBAccessInterface.create(query);
+	}
+	
+	public static void removeCard(Card c) throws SQLException {
+		String query = "DELETE FROM creditcard WHERE creditcard.creditcard = " 
+		+ c.getCreditCardNum() + ";";
+		
+		DBAccessInterface.delete(query);
+	}
+	
+	public static ArrayList<BookingOrder> getAllBookingOrdersWithUser(int userId) 
+		throws SQLException {
+		String query = "SELECT bookingId, date, numTickets, promoCode, subtotal, " +
+		"tax, total, creditcard, user_userId WHERE user_userId = " + userId + ";";
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		ArrayList<BookingOrder> bo = new ArrayList<BookingOrder>();
+		
+		while(rs.next()) {
+			bo.add(new BookingOrder(rs.getInt("bookingId"), rs.getDate("date"),
+				rs.getInt("numTickets"), rs.getString("promoCode"),
+				rs.getFloat("subtotal"), rs.getFloat("tax"), 
+				rs.getFloat("total"), rs.getString("creditcard"),
+				rs.getInt("user_userId")));
+		}
+		
+		return bo;
+	}
+	
+	public static ArrayList<Card> getAllCreditCardsWithUser(int userId) 
+		throws SQLException {
+		String query = "SELECT creditcard, type, expirationDate, billingAddress, " +
+		"securityCode, user_userId WHERE user_userId = " + userId + ";";
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		ArrayList<Card> c = new ArrayList<Card>();
+		
+		while(rs.next()) {
+			c.add(new Card(rs.getString("creditcard"), rs.getString("type"),
+				rs.getString("expirationDate"), rs.getString("billingAddress"),
+				rs.getInt("securityCode")));
+		}
+		
+		return c;
+	}
 
 	/** Get data from bookingOrder **/
 
-	public static Date getBookingDate(BookingOrder b) 
-		throws SQLException {
-		String query = "SELECT date FROM bookingOrder WHERE " +
-		"bookingOrder.bookingId = " + b.getBookingId() + ";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		Date result = new Date(0);
-		
-		while(rs.next()) {
-			result = rs.getDate("date");
-		}
-		
-		return result;
-	}
-	
-	public static int getNumTicketsInOrder(BookingOrder b) 
+	// @Stephen
+	public static BookingOrder getBookingOrder(int bookingId) 
 		throws SQLException, RuntimeException {
-			
-		String query = "SELECT numTickets FROM bookingOrder WHERE " +
-		"bookingOrder.bookingId = " + b.getBookingId() + ";";
+		
+		String query = "";
 		ResultSet rs = DBAccessInterface.retrieve(query);
-		int result = -1;
+		BookingOrder bo = null;
 		
 		while(rs.next()) {
-			result = rs.getInt("numTickets");
+			bo = new BookingOrder(bookingId, rs.getDate("date"),
+				rs.getInt("numTickets"), rs.getFloat("subtotal"),
+				rs.getFloat("tax"),	rs.getFloat("total"), 
+				rs.getString("creditcard"), rs.getInt("users_userId"), 
+				rs.getString("promoCodes_code"));
 		}
-		
-		if (result == -1) {
+		if (bo == null) {
 			throw new RuntimeException(DB_ERR_MSG);
 		} else {
-			return result;	
-		}
-	}
-	
-	public static String getPromoCode(BookingOrder b) 
-		throws SQLException, RuntimeException {
-			
-		String query = "SELECT promoCode FROM bookingOrder WHERE " +
-		"bookingOrder.bookingId = " + b.getBookingId() + ";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		String result = "";
-		
-		while(rs.next()) {
-			result = rs.getString("promoCode");
-		}
-		
-		if (result == "") {
-			throw new RuntimeException(DB_ERR_MSG);
-		} else {
-			return result;	
-		}
-	}
-	
-	public static float getSubtotal(BookingOrder b) 
-		throws SQLException, RuntimeException {
-		
-		String query = "SELECT subtotal FROM bookingOrder WHERE " +
-		"bookingOrder.bookingId = " + b.getBookingId() + ";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		float result = -1.0;
-		
-		while(rs.next()) {
-			result = rs.getFloat("subtotal");
-		}
-		
-		if (result == -1.0) {
-			throw new RuntimeException("Data was not returned.");
-		} else {
-			return result;
-		}
-	}
-	
-	public static float getTax(BookingOrder b) 
-		throws SQLException, RuntimeException {
-			
-		String query = "SELECT tax FROM bookingOrder WHERE " +
-		"bookingOrder.bookingId = " + b.getBookingId() + ";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		float result = -1.0;
-		
-		while(rs.next()) {
-			return rs.getFloat("tax");
-		}
-		
-		if (result == -1.0) {
-			throw new RuntimeException(DB_ERR_MSG);
-		} else {
-			return result;	
-		}
-	}
-	
-	public static float getTotal(BookingOrder b)
-		throws SQLException, RuntimeException {
-			
-		String query = "SELECT total FROM bookingOrder WHERE " +
-		"bookingOrder.bookingId = " + b.getBookingId() + ";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		float result = -1.0;
-		
-		while(rs.next()) {
-			return rs.getFloat("total");
-		}
-		
-		if (result == -1.0) {
-			throw new RuntimeException(DB_ERR_MSG);
-		} else {
-			return result;	
-		}
-	}
-	
-	public static int getCreditCard(BookingOrder b)
-		throws SQLException, RuntimeException {
-			
-		String query = "SELECT creditcard FROM bookingOrder WHERE " + 
-		"bookingOrder.bookingId = " + b.getBookingId() + ";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		int result = -1;
-		
-		while(rs.next()) {
-			return rs.getInt("creditcard");
-		}
-		
-		if (result == -1) {
-			throw new RuntimeException(DB_ERR_MSG);
-		} else {
-			return result;	
+			return bo;
 		}
 	}
 	
@@ -491,7 +241,7 @@ public class BGAnimationsPersistImpl {
 	public static void updateBookingOrder(User u, Card c, BookingOrder b) 
 		throws SQLException {
 		String query = "UPDATE bookingOrder "+
-			"SET date = '"+b.getNumTicketsInOrder()+"', "+
+			"SET date = '"+b.getDate()+"', "+
 				"numTickets = '"+b.getNumTicketsInOrder()+"', "+
 				"promoCode = '"+b.getPromoCode()+"', "+
 				"subtoatl = '"+b.getSubtotal()+"', "+
@@ -506,25 +256,6 @@ public class BGAnimationsPersistImpl {
 	
 	/** Get data from movie **/
 	
-	public static String getMovieTitle(Movie m) 
-		throws SQLException, RuntimeException {
-			
-		String query = "SELECT title FROM movie WHERE " +
-		"movie.movieId = " + m.getMovieId() + ";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		String result = "";
-		
-		while(rs.next()) {
-			return rs.getString("title");
-		}
-		
-		if (result == "") {
-			throw new RuntimeException(DB_ERR_MSG);
-		} else {
-			return result;	
-		}
-	}
-	
 	public static void updateMovie(Movie m) throws SQLException {
 		String query = "UPDATE movie "+
 			"SET title = '"+m.getMovieTitle()+"', "+
@@ -537,103 +268,6 @@ public class BGAnimationsPersistImpl {
 				"' WHERE bookingId = '"+ b.getBookingId()+";";
 				
 		DBAccessInterface.create(query);
-	}
-	
-	public static String getMovieDirector(Movie m) 
-		throws SQLException, RuntimeException {
-			
-		String query = "SELECT director FROM movie WHERE " + 
-		"movie.movieId = " + m.getMovieId() + ";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		String result = "";
-		
-		while(rs.next()) {
-			return rs.getString("title");
-		}
-		
-		if (result == "") {
-			throw new RuntimeException(DB_ERR_MSG);
-		} else {
-			return result;	
-		}
-	}
-	
-	public static String getMovieCast(Movie m) 
-		throws SQLException, RuntimeException {
-			
-		String query = "SELECT cast FROM movie WHERE + "
-		"movie.movieId = " + m.getMovieId() + ";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		String result = "";
-		
-		while(rs.next()) {
-			return rs.getString("title");
-		}
-		
-		if (result == "") {
-			throw new RuntimeException(DB_ERR_MSG);
-		} else {
-			return result;	
-		}
-	}
-	
-	public static String getMovieGenre(Movie m) 
-		throws SQLException, RuntimeException {
-			
-		String query = "SELECT genre FROM movie WHERE + "
-		"movie.movieId = " + m.getMovieId() + ";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		String result = "";
-		
-		while(rs.next()) {
-			return rs.getString("title");
-		}
-		
-		if (result == "") {
-			throw new RuntimeException(DB_ERR_MSG);
-		} else {
-			return result;	
-		}
-	}
-	
-	public static String getMovieDescription(Movie m) 
-		throws SQLException, RuntimeException {
-			
-		String query = "SELECT description FROM movie WHERE + "
-		"movie.movieId = " + m.getMovieId() + ";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		
-		while(rs.next()) {
-			return rs.getString("title");
-		}
-		
-		if (result == "") {
-			throw new RuntimeException(DB_ERR_MSG);
-		} else {
-			return result;	
-		}
-	}
-	
-	public static String getMovieBannerUrl(Movie m) throws SQLException {
-		String query = "SELECT bannerUrl FROM movie WHERE + "
-		"movie.movieId = " + m.getMovieId() + ";";
-		
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		
-		while(rs.next()) {
-			return rs.getString("title");
-		}
-	}
-	
-	public static float getMovieRating(Movie m) throws SQLException {
-		String query = "SELECT ratings FROM movie WHERE + "
-		"movie.movieId = " + m.getMovieId() + ";";
-				
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		
-		while(rs.next()) {
-			return rs.getFloat("title");
-		}
 	}
 	
 	public static void addNewMovie(Movie m) throws SQLException {
@@ -654,76 +288,51 @@ public class BGAnimationsPersistImpl {
 		DBAccessInterface.delete(query);
 	}
 	
+	// @Stephen
+	public static Movie getMovie(int movieId) 
+		throws SQLException, RuntimeException {
+		String query = "";
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		Movie m = null;
+		
+		while(rs.next()) {
+			m = new Movie(movieId, rs.getString("title"),
+				rs.getString("director"), rs.getSeat("cast"),
+				rs.getString("genre"), rs.getString("description"),
+				rs.getString("bannerUrl"), rs.getFloat("userRatings"),
+				rs.getString("mpaaRating"));
+		}
+		
+		if (m == null) {
+			throw new RuntimeException(DB_ERR_MSG);
+		} else {
+			return m;
+		}
+		
+	}
+	
 	/** Gets data from ticket **/
 	
-	
-	public static Date getTicketShowtime(Ticket t) throws SQLException {
-		String query = "SELECT showtime FROM ticket WHERE + "
-		"ticket.ticketId = " + m.getTicketId() + ";";
-				
+	// @Stephen
+	public static Ticket getTicket(int ticketId) 
+		throws SQLException, RuntimeException {
+		
+		String query = "";
 		ResultSet rs = DBAccessInterface.retrieve(query);
+		Ticket t = null;
 		
 		while(rs.next()) {
-			return rs.getDate("title");
-		}
-	}
-	
-	public static int getTicketSeatNum(Ticket t) throws SQLException {
-		String query = "SELECT seat FROM ticket WHERE + "
-		"ticket.ticketId = " + m.getTicketId() + ";";
-				
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		
-		while(rs.next()) {
-			return rs.getInt("title");
-		}
-	}
-	
-	public static String getTicketType(Ticket t) throws SQLException {
-		String query = "SELECT ticketType FROM ticket WHERE + "
-		"ticket.ticketId = " + m.getTicketId() + ";";
-				
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		
-		while(rs.next()) {
-			return rs.getString("title");
-		}
-	}
-	
-	public static float getTicketPurchasePrice(Ticket t) throws SQLException {
-		String query = "SELECT purchasePrice FROM ticket WHERE + "
-		"ticket.ticketId = " + m.getTicketId() + ";";
-				
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		
-		while(rs.next()) {
-			return rs.getFloat("title");
-		}
-	}
-	
-	public static int getTicketBookingOrderId(Ticket t) throws SQLException {
-		String query = "SELECT bookingOrder_bookingId FROM ticket WHERE + "
-		"ticket.ticketId = " + m.getTicketId() + ";";
-				
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		
-		while(rs.next()) {
-			return rs.getInt("title");
-		}
-	}
-	
-	public static int getTicketMovieId(Ticket t) throws SQLException {
-		String query = "SELECT movie_movieId FROM ticket WHERE + "
-		"ticket.ticketId = " + m.getTicketId() + ";";
-				
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		int result = -1;
-		
-		while(rs.next()) {
-			return rs.getInt("title");
+			t = new Ticket(ticketId, rs.getDate("showtime"),
+				rs.getInt("seat"), rs.getString("ticketType"),
+				rs.getFloat("purchasePrice"), rs.getInt("bookingOrder_bookingId"),
+				rs.getInt("movie_movieId"));
 		}
 		
-		return result;
+		if (t == null) {
+			throw new RuntimeException(DB_ERR_MSG);
+		} else {
+			return t;
+		}
 	}
 	
 	public static void updateTicket(Ticket t) throws SQLException {
@@ -759,32 +368,25 @@ public class BGAnimationsPersistImpl {
 	
 	/** Gets data from showtime **/
 	
-	public static int getShowtimeHallId(Showtime s) throws SQLException {
-		String query = "SELECT hallId FROM showtime WHERE + "
-		"showtime.showId = " + s.showId() + ";";
-				
-		ResultSet rs = DBAccessInterface.retrieve(query);	
-	}
-	
-	public static Date getShowtimeDate(Showtime s) throws SQLException {
-		String query = "SELECT time FROM showtime WHERE + "
-		"showtime.showId = " + s.showId() + ";";
-				
-		ResultSet rs = DBAccessInterface.retrieve(query);	
-	}
-	
-	public static int getShowtimeNumSeats(Showtime s) throws SQLException {
-		String query = "SELECT numSeats FROM showtime WHERE + "
-		"showtime.showId = " + s.showId() + ";";
-				
-		ResultSet rs = DBAccessInterface.retrieve(query);	
-	}
-	
-	public static int getShowtimeMovieId(Showtime s) throws SQLException {
-		String query = "SELECT movie_movieId FROM showtime WHERE + "
-		"showtime.showId = " + s.showId() + ";";
-				
-		ResultSet rs = DBAccessInterface.retrieve(query);	
+	// @Stephen
+	public static Showtime getShowtime(int showtimeId) 
+		throws SQLException, RuntimeException {
+		
+		String query = "";
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		Showtime s = null;
+		
+		while(rs.next()) {
+			s = new Showtime(showtimeId, rs.getInt("hallId"),
+				rs.getDate("time"), rs.getInt("numSeats"),
+				rs.getInt("movie_movieId"));
+		}
+		
+		if (s == null) {
+			throw new RuntimeException(DB_ERR_MSG);
+		} else {
+			return s;
+		}
 	}
 	
 	public static void updateShowtime(Showtime s) throws SQLException {
@@ -809,26 +411,25 @@ public class BGAnimationsPersistImpl {
 	
 	public static void deleteShowtime(Showtime s) throws SQLException {
 		String query = "DELETE FROM showtime WHERE " +
-		"showtime.showId = " + s.getShowId()+ ";";
+		"showtime.getshowId = " + s.getShowId()+ ";";
 		
 		DBAccessInterface.delete(query);
 	}
 	
 	/** Gets data from movieReview **/
 	
-	public static int getReviewUserId(Review r) throws SQLException {
-		String query = "SELECT userId FROM movieReview WHERE + "
-		"movieReview.reviewId = " + r.ReviewId() + ";";
-	}
-	
-	public static String getReview(Review r) throws SQLException {
-		String query = "SELECT review FROM movieReview WHERE + "
-		"movieReview.reviewId = " + r.ReviewId() + ";";
-	}
-	
-	public static int getReviewMovieId(Review r) throws SQLException {
-		String query = "SELECT movie_movieId FROM movieReview WHERE + "
-		"movieReview.reviewId = " + r.ReviewId() + ";";
+	public static ArrayList<MovieReview> getReviewsForMovie(Movie m) throws SQLException {
+		String query = "SELECT reviewId, userId, review, movie_movieId FROM " +
+		"movieReview WHERE movieReview.movie_movieId = " + m.getMovieId() + ";";
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		ArrayList<MovieReview> r = new ArrayList<Review>();
+		
+		while (rs.next()) {
+			r.add(new MovieReview(rs.getInt("reviewId"), rs.getInt("userId"),
+				rs.getString("review")))
+		}
+		
+		return r;
 	}
 	
 	public static void updateReview(Review r) throws SQLException {
@@ -842,66 +443,114 @@ public class BGAnimationsPersistImpl {
 	}
 	
 	public static void createNewReview(Review r) throws SQLException {
+		String query = "INSERT INTO movieReview " + 
+		"(userId, review, movie_movieId) " +
+		" VALUES ('" + r.getUserId() + "', '" + r.getReview() + "', '" + 
+		r.getMovie_movieId() + "');";
 		
+		DBAccessInterface.create(query);
 	}
 	
 	public static void deleteReview(Review r) throws SQLException {
+		String query = "DELETE FROM movieReview WHERE " +
+		"movieReview.reviewId = " + r.getReviewId()+ ";";
 		
+		DBAccessInterface.delete(query);
 	}
 	
 	/** Get data from hall **/
 	
-	public static int getHallTotalSeats(Hall h) throws SQLException {
+	// @Stephen
+	public static Hall getHall(int hallId) 
+		throws SQLException, RuntimeException {
 		
-	}
-	
-	public static Date getHallShowtimes(Hall h) throws SQLException {
+		String query = "";
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		Hall h = null;
 		
-	}
-	
-	public static int getHallNumSeatsRemaining(Hall h) throws SQLException {
+		while(rs.next()) {
+			h = new Hall(hallId, rs.getInt("totalSeats"),
+				rs.getDate("showtimes"), rs.getInt("numSeatsRemaining"),
+				rs.getInt("showtime_showId"));
+		}
 		
-	}
-	
-	public static int getHallShowId(Hall h) throws SQLException {
+		if (h == null) {
+			throw new RuntimeException(DB_ERR_MSG);
+		} else {
+			return h;
+		}
 		
 	}
 	
 	public static void updateHall(Hall h) throws SQLException {
-		
+		String query = "UPDATE hall "+
+			"SET totalSeats = '"+h.getTotalSeats()+"', "+
+				"showtimes = '"+h.getShowtimes()+"', "+
+				"numSeatsRemaining = '"+ h.getNumSeatsRemaining()+
+				"' WHERE hallId = '"+ h.hallId()+";";
+				
+		DBAccessInterface.create(query);
 	}
 	
 	public static void createNewHall(Hall h) throws SQLException {
+		String query = "INSERT INTO hall " + 
+		"(totalSeats, showtimes, numSeatsRemaining, showtime_showId) " +
+		" VALUES ('" + h.getTotalSeats() + "', '" + h.getShowtimes() + "', '" + 
+		h.getNumSeatsRemaining() + "');";
 		
+		DBAccessInterface.create(query);
 	}
 	
 	public static void deleteHall(Hall h) throws SQLException {
+		String query = "DELETE FROM hall WHERE " +
+		"hall.hallId = " + h.hallId()+ ";";
 		
+		DBAccessInterface.delete(query);
 	}
 	
 	/** Get data from seats **/
 	
-	public static boolean isSeatReserved(Seat s) throws SQLException {
+	// @Stephen
+	public static Seat getSeat(int seatId) throws SQLException, RuntimeException {
+		String query = "";
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		Seat s = null;
 		
-	}
-	
-	public static String getSeatShowId(Seat s) throws SQLException {
+		while(rs.next()) {
+			s = new Seat(seatId, rs.getBoolean("isReserved"),
+				rs.getInt("showId"), rs.getInt("hall_hallId"));
+		}
 		
-	}
-	
-	public static int getSeatHallId(Seat s) throws SQLException {
-		
+		if (s == null) {
+			throw new RuntimeException(DB_ERR_MSG);
+		} else {
+			return s;
+		}
 	}
 	
 	public static void updateSeat(Seat s) throws SQLException {
-		
+		String query = "UPDATE hall "+
+			"SET isReserved = '"+s.getIsReserved()+"', "+
+				"showId = '"+s.getShowId()+"', "+
+				"hall_hallId = '"+ s.getHallId()+
+				"' WHERE seatId = '"+ s.getSeatId()+";";
+				
+		DBAccessInterface.create(query);
 	}
 	
 	public static void createNewSeat(Seat s) throws SQLException {
+		String query = "INSERT INTO seat " + 
+		"(isReserved, showId, hall_hallId) " +
+		" VALUES ('" + s.getIsReserved() + "', '" + s.getShowId() + "', '" + 
+		s.getHall_hallId() + "');";
 		
+		DBAccessInterface.create(query);
 	}
 	
 	public static void deleteSeat(Seat s) throws SQLException {
+		String query = "DELETE FROM seat WHERE " +
+		"seat.seatId = " + s.getSeatId()+ ";";
 		
+		DBAccessInterface.delete(query);
 	}
 }
