@@ -11,7 +11,8 @@ public class BGAnimationsPersistImpl {
 	
 	// @Stephen
 	public static User getUser(int userId) throws SQLException, RuntimeException {
-		String query = "";
+		String query = "SELECT userId, firstName, lastName, email, address, " +
+		"avatarUrl, isBanned, isAdmin FROM user WHERE user.userId = " + userId + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		User u = null;
 		
@@ -133,14 +134,16 @@ public class BGAnimationsPersistImpl {
 	
 	// @Stephen
 	public static ArrayList<Card> getAllCardForUser(User u) throws SQLException {
-		String query = "";"
+		String query = "SELECT creditcard, type, expirationDate, " +
+		"billingAddress, securityCode, user_userId FROM user JOIN creditcard " +
+		"ON user.userId = creditcard.user_userId WHERE userId = " u.getUserID() + ";";"
 		ResultSet rs = DBAccessInterface.retrieve(query);	
 		ArrayList<Card> cards = new ArrayList<Card>();
 		
 		while(rs.next()) {
 			cards.add(new Card(rs.getString("creditcard"), rs.getString("type"),
 				rs.getDate("expirationDate"), rs.getString("billingAddress"),
-				rs.getInt("securityCode"), rs.getInt("users_userId")));
+				rs.getInt("securityCode"), rs.getInt("user_userId")));
 		}
 		
 		return cards;
@@ -203,7 +206,9 @@ public class BGAnimationsPersistImpl {
 	public static BookingOrder getBookingOrder(int bookingId) 
 		throws SQLException, RuntimeException {
 		
-		String query = "";
+		String query = "SELECT date, numTickets, subtotal, tax, " +
+		"total, creditcard, users_userId, promoCodes_code FROM bookingOrder " + 
+		"WHERE bookingOrder.bookingId = " + bookingId + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		BookingOrder bo = null;
 		
@@ -291,7 +296,9 @@ public class BGAnimationsPersistImpl {
 	// @Stephen
 	public static Movie getMovie(int movieId) 
 		throws SQLException, RuntimeException {
-		String query = "";
+		String query = "SELECT movieId, title, director, cast, genre, " +
+		"description, bannerUrl, userRatings, mpaaRating FROM movie " +
+		"WHERE movie.movieId = " movieId + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		Movie m = null;
 		
@@ -317,7 +324,9 @@ public class BGAnimationsPersistImpl {
 	public static Ticket getTicket(int ticketId) 
 		throws SQLException, RuntimeException {
 		
-		String query = "";
+		String query = "SELECT ticketId, showtime, seat, ticketType, " +
+		"purchasePrice, bookingOrder_bookingId, movie_movieId FROM ticket " +
+		"WHERE ticket.ticketId = " + ticketId + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		Ticket t = null;
 		
@@ -368,11 +377,29 @@ public class BGAnimationsPersistImpl {
 	
 	/** Gets data from showtime **/
 	
+	// @Stephen -- for this one, only give me the showId's in the result
+	public static ArrayList<Showtime> getShowtimesForMovie(int movieId) 
+		throws SQLException, RuntimeException {
+			
+		String query = "SELECT showId FROM showtime JOIN movie "+
+		"ON showtime.movie_movieId = movie.movieId WHERE movie.movieId = " +
+		movieId +";";
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		ArrayList<Showtime> st = new ArrayList<Showtime>();
+		
+		while(rs.next()) {
+			st.add(getShowtime(rs.getInt("showId")));
+		}
+		
+		return st;
+	}
+	
 	// @Stephen
 	public static Showtime getShowtime(int showtimeId) 
 		throws SQLException, RuntimeException {
 		
-		String query = "";
+		String query = "SELECT hallId, time, numSeats, movie_movieId "+
+		"FROM showtime WHERE showtime.showId = " + showtimeId + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		Showtime s = null;
 		
@@ -464,7 +491,8 @@ public class BGAnimationsPersistImpl {
 	public static Hall getHall(int hallId) 
 		throws SQLException, RuntimeException {
 		
-		String query = "";
+		String query = "SELECT totalSeats, showtimes, numSeatsRemaining, " +
+		"showtime_showId FROM hall WHERE hall.hallId = " + hallId + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		Hall h = null;
 		
@@ -512,7 +540,8 @@ public class BGAnimationsPersistImpl {
 	
 	// @Stephen
 	public static Seat getSeat(int seatId) throws SQLException, RuntimeException {
-		String query = "";
+		String query = "SELECT isReserved, showId, hall_hallId FROM seat " +
+		"WHERE seat.seatId = " + seatId + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		Seat s = null;
 		
