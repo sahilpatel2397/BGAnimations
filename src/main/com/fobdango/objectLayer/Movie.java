@@ -12,19 +12,12 @@ public class Movie {
 	private String bannerUrl;
 	private float ratings; 
 
-	private ArrayList<MovieReviews> movieReviews;
-	private ArrayList<ShowTime> showTime;	
-	private ArrayList<Ticket> ticket;
-
-
 	public Movie() {
 
 	}
 
 
-	public Movie(int movieID, String title, String director, String cast, String genre, String description,
-			String bannerUrl, float ratings, ArrayList<MovieReviews> movieReviews, ArrayList<ShowTime> showTime,
-			ArrayList<Ticket> ticket) {
+	public Movie(int movieID, String title, String director, String cast, String genre, String description, String bannerUrl, float ratings){
 		this.movieID = movieID;
 		this.title = title;
 		this.director = director;
@@ -33,9 +26,6 @@ public class Movie {
 		this.description = description;
 		this.bannerUrl = bannerUrl;
 		this.ratings = ratings;
-		this.movieReviews = movieReviews;
-		this.showTime = showTime;
-		this.ticket = ticket;
 	}
 
 
@@ -118,38 +108,6 @@ public class Movie {
 		this.ratings = ratings;
 	}
 
-
-	public ArrayList<MovieReviews> getMovieReviews() {
-		return movieReviews;
-	}
-
-
-	public void setMovieReviews(ArrayList<MovieReviews> movieReviews) {
-		this.movieReviews = movieReviews;
-	}
-
-
-	public ArrayList<ShowTime> getShowTime() {
-		return showTime;
-	}
-
-
-	public void setShowTime(ArrayList<ShowTime> showTime) {
-		this.showTime = showTime;
-	}
-
-
-	public ArrayList<Ticket> getTicket() {
-		return ticket;
-	}
-
-
-	public void setTicket(ArrayList<Ticket> ticket) {
-		this.ticket = ticket;
-	}
-
-
-	
 }
 
 
