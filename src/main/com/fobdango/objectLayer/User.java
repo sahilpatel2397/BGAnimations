@@ -74,7 +74,7 @@ public class User {
 		this.isBanned = isBanned;
 	}
 
-	public User(int userID, String firstName, String lastName, String email, String address, String avatarUrl, boolean isBanned) {
+	public User(int userID, String firstName, String lastName, String email, String address, String avatarUrl, boolean isBanned, ArrayList<BookingOrder> bookingOrders, ArrayList<Card> cards) {
 		this.userID = userID;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -82,6 +82,8 @@ public class User {
 		this.address = address;
 		this.avatarUrl = avatarUrl;
 		this.isBanned = isBanned;
+		this.bookingOrders = bookingOrders;
+		this.cards = cards;
 	}
 
 
