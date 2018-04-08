@@ -1,6 +1,4 @@
 
-
-
 public class User {
 
 	private int userID;
@@ -10,9 +8,7 @@ public class User {
 	private String address;
 	private String avatarUrl;
 	private boolean isBanned;
-
-	private ArrayList<BookingOrder> bookingOrders;
-	private ArrayList<Card> cards;
+	private boolean isAdmin;
 
 	public User() {
 
@@ -74,7 +70,11 @@ public class User {
 		this.isBanned = isBanned;
 	}
 
-	public User(int userID, String firstName, String lastName, String email, String address, String avatarUrl, boolean isBanned, ArrayList<BookingOrder> bookingOrders, ArrayList<Card> cards) {
+	public boolean getStatus(){
+		return isAdmin;
+	}
+	
+	public User(int userID, String firstName, String lastName, String email, String address, String avatarUrl, boolean isBanned, boolean isAdmin) {
 		this.userID = userID;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -82,17 +82,7 @@ public class User {
 		this.address = address;
 		this.avatarUrl = avatarUrl;
 		this.isBanned = isBanned;
-		this.bookingOrders = bookingOrders;
-		this.cards = cards;
-	}
-
-
-	public ArrayList<BookingOrder> getBookingOrders() {
-		return bookingOrders;
-	}
-
-	public ArrayList<BookingOrder> getCards() {
-		return cards;
+		this.isAdmin = isAdmin;
 	}
 
 

@@ -1,21 +1,20 @@
 import java.util.ArrayList;
+import java.util.Date;
+
 
 public class Ticket {
 
 
 	private int ticketNum;
 	private int movieID;
-	private String showTime;
+	private Date showTime;
 	private int locationOfSeat;
+	private int bookingOrderId;
+	private int movieId;
 	private String ticketType;
 	private float purchasePrice;
-
-
-
-
 	
-	public Ticket(int ticketNum, int movieID, String showTime, int locationOfSeat, String ticketType,
-			float purchasePrice) {
+	public Ticket(int ticketNum, Date showTime, int locationOfSeat, String ticketType, float purchasePrice, int bookingOrderId, int movieId) {
 
 		this.ticketNum = ticketNum;
 		this.movieID = movieID;
@@ -23,9 +22,9 @@ public class Ticket {
 		this.locationOfSeat = locationOfSeat;
 		this.ticketType = ticketType;
 		this.purchasePrice = purchasePrice;
+		this.bookingOrderId = bookingOrderId;
+		this.movieId = movieId;
 	}
-	
-
 
 	public Ticket() {
 
