@@ -1,6 +1,8 @@
+import Date;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.sql.User;
 import java.sql.SQLException;
-import Date;
 
 public class BGAnimationsPersistImpl {
 	
@@ -10,23 +12,37 @@ public class BGAnimationsPersistImpl {
 	/** Get data from the user table **/
 	
 	// @Stephen
+	public static boolean authenticateUser(String email, String password) 
+		throws SQLException, RuntimeException, NoSuchAlgorithmException,
+		NoSuchProviderException {
+		
+		String encryptedPassword = PasswordHandler.getSecurePassword(password);
+		String query = "";
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		
+		if (rs.next()) {
+			if (rs.getString("password").equals(encryptedPassword)) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			throw new RuntimeException(DB_ERR_MSG);
+		}
+	}
+	
 	public static User getUser(int userId) throws SQLException, RuntimeException {
 		String query = "SELECT userId, firstName, lastName, email, address, " +
 		"avatarUrl, isBanned, isAdmin FROM user WHERE user.userId = " + userId + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
-		User u = null;
 		
-		while(rs.next()) {
-			u = new User(rs.getInt("userId"), rs.getString("firstName"),
+		if (rs.next()) {
+			return new User(rs.getInt("userId"), rs.getString("firstName"),
 				rs.getString("lastName"), rs.getString("email"),
 				rs.getString("address"), rs.getString("avatarUrl"),
 				rs.getBoolean("isBanned"), rs.getBoolean("isAdmin"));
-		}
-		
-		if (u == null) {
-			throw new RuntimeException(DB_ERR_MSG);
 		} else {
-			return u;
+			throw new RuntimeException(DB_ERR_MSG);
 		}
 	}
 
@@ -64,16 +80,11 @@ public class BGAnimationsPersistImpl {
 		String query = "SELECT isBanned FROM user WHERE user.userId = " +
 			u.getUserId() + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
-		boolean result = null;
 		
-		while(rs.next()) {
-			result = rs.getBoolean("isBanned");
-		}
-		
-		if (result == null) {
-			throw new RuntimeException(DB_ERR_MSG);
+		if (rs.next()) {
+			return rs.getBoolean("isBanned");
 		} else {
-			return result;	
+			throw new RuntimeException(DB_ERR_MSG);
 		}
 	}
 
@@ -132,7 +143,6 @@ public class BGAnimationsPersistImpl {
 	
 	/** Get data from creditcard table **/
 	
-	// @Stephen
 	public static ArrayList<Card> getAllCardForUser(User u) throws SQLException {
 		String query = "SELECT creditcard, type, expirationDate, " +
 		"billingAddress, securityCode, user_userId FROM user JOIN creditcard " +
@@ -201,8 +211,7 @@ public class BGAnimationsPersistImpl {
 	}
 
 	/** Get data from bookingOrder **/
-
-	// @Stephen
+	
 	public static BookingOrder getBookingOrder(int bookingId) 
 		throws SQLException, RuntimeException {
 		
@@ -210,19 +219,15 @@ public class BGAnimationsPersistImpl {
 		"total, creditcard, users_userId, promoCodes_code FROM bookingOrder " + 
 		"WHERE bookingOrder.bookingId = " + bookingId + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
-		BookingOrder bo = null;
 		
-		while(rs.next()) {
-			bo = new BookingOrder(bookingId, rs.getDate("date"),
+		if (rs.next()) {
+			return new BookingOrder(bookingId, rs.getDate("date"),
 				rs.getInt("numTickets"), rs.getFloat("subtotal"),
 				rs.getFloat("tax"),	rs.getFloat("total"), 
 				rs.getString("creditcard"), rs.getInt("users_userId"), 
 				rs.getString("promoCodes_code"));
-		}
-		if (bo == null) {
-			throw new RuntimeException(DB_ERR_MSG);
 		} else {
-			return bo;
+			throw new RuntimeException(DB_ERR_MSG);
 		}
 	}
 	
@@ -293,34 +298,26 @@ public class BGAnimationsPersistImpl {
 		DBAccessInterface.delete(query);
 	}
 	
-	// @Stephen
 	public static Movie getMovie(int movieId) 
 		throws SQLException, RuntimeException {
 		String query = "SELECT movieId, title, director, cast, genre, " +
 		"description, bannerUrl, userRatings, mpaaRating FROM movie " +
 		"WHERE movie.movieId = " movieId + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
-		Movie m = null;
 		
-		while(rs.next()) {
-			m = new Movie(movieId, rs.getString("title"),
+		if (rs.next()) {
+			return new Movie(movieId, rs.getString("title"),
 				rs.getString("director"), rs.getSeat("cast"),
 				rs.getString("genre"), rs.getString("description"),
 				rs.getString("bannerUrl"), rs.getFloat("userRatings"),
 				rs.getString("mpaaRating"));
-		}
-		
-		if (m == null) {
-			throw new RuntimeException(DB_ERR_MSG);
 		} else {
-			return m;
+			throw new RuntimeException(DB_ERR_MSG);
 		}
-		
 	}
 	
 	/** Gets data from ticket **/
 	
-	// @Stephen
 	public static Ticket getTicket(int ticketId) 
 		throws SQLException, RuntimeException {
 		
@@ -328,19 +325,14 @@ public class BGAnimationsPersistImpl {
 		"purchasePrice, bookingOrder_bookingId, movie_movieId FROM ticket " +
 		"WHERE ticket.ticketId = " + ticketId + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
-		Ticket t = null;
-		
-		while(rs.next()) {
-			t = new Ticket(ticketId, rs.getDate("showtime"),
+
+		if (rs.next()) {
+			return new Ticket(ticketId, rs.getDate("showtime"),
 				rs.getInt("seat"), rs.getString("ticketType"),
 				rs.getFloat("purchasePrice"), rs.getInt("bookingOrder_bookingId"),
 				rs.getInt("movie_movieId"));
-		}
-		
-		if (t == null) {
-			throw new RuntimeException(DB_ERR_MSG);
 		} else {
-			return t;
+			throw new RuntimeException(DB_ERR_MSG);
 		}
 	}
 	
@@ -377,7 +369,6 @@ public class BGAnimationsPersistImpl {
 	
 	/** Gets data from showtime **/
 	
-	// @Stephen -- for this one, only give me the showId's in the result
 	public static ArrayList<Showtime> getShowtimesForMovie(int movieId) 
 		throws SQLException, RuntimeException {
 			
@@ -394,25 +385,19 @@ public class BGAnimationsPersistImpl {
 		return st;
 	}
 	
-	// @Stephen
 	public static Showtime getShowtime(int showtimeId) 
 		throws SQLException, RuntimeException {
 		
 		String query = "SELECT hallId, time, numSeats, movie_movieId "+
 		"FROM showtime WHERE showtime.showId = " + showtimeId + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
-		Showtime s = null;
 		
-		while(rs.next()) {
-			s = new Showtime(showtimeId, rs.getInt("hallId"),
+		if (rs.next()) {
+			return new Showtime(showtimeId, rs.getInt("hallId"),
 				rs.getDate("time"), rs.getInt("numSeats"),
 				rs.getInt("movie_movieId"));
-		}
-		
-		if (s == null) {
-			throw new RuntimeException(DB_ERR_MSG);
 		} else {
-			return s;
+			throw new RuntimeException(DB_ERR_MSG);
 		}
 	}
 	
@@ -487,27 +472,20 @@ public class BGAnimationsPersistImpl {
 	
 	/** Get data from hall **/
 	
-	// @Stephen
 	public static Hall getHall(int hallId) 
 		throws SQLException, RuntimeException {
 		
 		String query = "SELECT totalSeats, showtimes, numSeatsRemaining, " +
 		"showtime_showId FROM hall WHERE hall.hallId = " + hallId + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
-		Hall h = null;
 		
-		while(rs.next()) {
-			h = new Hall(hallId, rs.getInt("totalSeats"),
+		if (rs.next()) {
+			return new Hall(hallId, rs.getInt("totalSeats"),
 				rs.getDate("showtimes"), rs.getInt("numSeatsRemaining"),
 				rs.getInt("showtime_showId"));
-		}
-		
-		if (h == null) {
-			throw new RuntimeException(DB_ERR_MSG);
 		} else {
-			return h;
+			throw new RuntimeException(DB_ERR_MSG);
 		}
-		
 	}
 	
 	public static void updateHall(Hall h) throws SQLException {
@@ -538,22 +516,16 @@ public class BGAnimationsPersistImpl {
 	
 	/** Get data from seats **/
 	
-	// @Stephen
 	public static Seat getSeat(int seatId) throws SQLException, RuntimeException {
 		String query = "SELECT isReserved, showId, hall_hallId FROM seat " +
 		"WHERE seat.seatId = " + seatId + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
-		Seat s = null;
 		
-		while(rs.next()) {
-			s = new Seat(seatId, rs.getBoolean("isReserved"),
+		if (rs.next()) {
+			return new Seat(seatId, rs.getBoolean("isReserved"),
 				rs.getInt("showId"), rs.getInt("hall_hallId"));
-		}
-		
-		if (s == null) {
-			throw new RuntimeException(DB_ERR_MSG);
 		} else {
-			return s;
+			throw new RuntimeException(DB_ERR_MSG);
 		}
 	}
 	
