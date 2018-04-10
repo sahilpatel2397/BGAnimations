@@ -122,6 +122,8 @@
 
 .nav-link {
   margin-top: 3%;
+  background-image: -webkit-linear-gradient(270deg, #fff, #fff);
+  background-image: linear-gradient(180deg, #fff, #fff);
 }
 
 .image-5 {
@@ -425,7 +427,7 @@
 }
 
 .bold-text {
-  margin-left: 1%;
+  margin-left: 0%;
 }
 
 .field-label-3 {
@@ -437,6 +439,7 @@
 }
 
 .field-label-5 {
+  display: inline;
   margin-top: 1%;
 }
 
@@ -488,7 +491,7 @@
 
 .link-2 {
   display: block;
-  margin-left: -4%;
+  margin-left: 10%;
   text-align: center;
 }
 
@@ -541,5 +544,132 @@
   display: block;
   margin-right: auto;
   margin-left: 45%;
+}
+
+.button-7 {
+  margin-left: 39%;
+}
+
+.navbar-4 {
+  background-image: -webkit-linear-gradient(270deg, #fff, #fff);
+  background-image: linear-gradient(180deg, #fff, #fff);
+}
+
+.navbar-5 {
+  background-image: -webkit-linear-gradient(270deg, #fff, #fff);
+  background-image: linear-gradient(180deg, #fff, #fff);
+}
+
+.container-9 {
+  background-image: -webkit-linear-gradient(270deg, #fff, #fff);
+  background-image: linear-gradient(180deg, #fff, #fff);
+}
+
+.nav-link-2 {
+  background-image: -webkit-linear-gradient(270deg, #fff, #fff);
+  background-image: linear-gradient(180deg, #fff, #fff);
+}
+
+.navbar-6 {
+  background-image: -webkit-linear-gradient(270deg, #fff, #fff);
+  background-image: linear-gradient(180deg, #fff, #fff);
+}
+
+.heading-5 {
+  margin-top: -19px;
+  margin-left: 23%;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.heading-6 {
+  margin-left: 23%;
+}
+
+.image-10 {
+  display: inline;
+}
+
+.paragraph-9 {
+  display: inline;
+  padding-left: 6px;
+  font-weight: 700;
+}
+
+.section-11 {
+  margin-left: 23%;
+  padding-right: 23%;
+}
+
+.row-3 {
+  margin-left: -1%;
+}
+
+.accountlabel {
+  margin-top: 1%;
+}
+
+.row-4 {
+  margin-left: -8px;
+}
+
+.text-field-5 {
+  margin-left: 2%;
+}
+
+.text-field-6 {
+  margin-left: 2%;
+}
+
+.field-label-8 {
+  margin-left: 2%;
+}
+
+.field-label-9 {
+  margin-left: 2%;
+}
+
+.html-embed-4 {
+  margin-left: 45%;
+}
+
+.section-12 {
+  margin-top: 1%;
+  border-style: solid;
+  border-width: 1px;
+  border-color: hsla(0, 0%, 50%, .13);
+}
+
+.button-8 {
+  margin-left: 47%;
+}
+
+.paragraph-10 {
+  margin-top: 49px;
+  margin-left: 23%;
+  font-family: Roboto, sans-serif;
+  font-size: 25px;
+  font-weight: 200;
+}
+
+.button-9 {
+  margin-left: 40%;
+  padding-right: 43px;
+  padding-left: 43px;
+}
+
+.button-10 {
+  margin-top: 2%;
+  margin-left: 35%;
+}
+
+.submit-button-3 {
+  margin-left: 41%;
+}
+
+.submit-button-4 {
+  margin-left: 40%;
+  padding-right: 44px;
+  padding-left: 44px;
 }
 
