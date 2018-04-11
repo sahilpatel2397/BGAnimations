@@ -1,10 +1,15 @@
-import Date;
+package com.BGAnimation.persistLayer;
+
+
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.sql.User;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-public class BGAnimationsPersistImpl {
+import com.BGAnimation.objectLayer.*;
+
+public class BGAnimationPersistImpl {
 	
 	private static final String DB_ERR_MSG = "Data was not returned from " +
 		" the database. Please try the query again.";
@@ -17,7 +22,7 @@ public class BGAnimationsPersistImpl {
 		NoSuchProviderException {
 		
 		String encryptedPassword = PasswordHandler.getSecurePassword(password);
-		String query = "";
+		String query = "SELECT password FROM user WHERE user.email=\""+email+"\";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		
 		if (rs.next()) {
@@ -31,15 +36,15 @@ public class BGAnimationsPersistImpl {
 		}
 	}
 	
-	public static User getUser(int userId) throws SQLException, RuntimeException {
+	public static User getUser(String username) throws SQLException, RuntimeException {
 		String query = "SELECT userId, firstName, lastName, email, address, " +
-		"avatarUrl, isBanned, isAdmin FROM user WHERE user.userId = " + userId + ";";
+		" isBanned, isAdmin FROM user WHERE user.email = \"" + username + "\";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		
 		if (rs.next()) {
 			return new User(rs.getInt("userId"), rs.getString("firstName"),
 				rs.getString("lastName"), rs.getString("email"),
-				rs.getString("address"), rs.getString("avatarUrl"),
+				rs.getString("address"), 
 				rs.getBoolean("isBanned"), rs.getBoolean("isAdmin"));
 		} else {
 			throw new RuntimeException(DB_ERR_MSG);
@@ -48,9 +53,9 @@ public class BGAnimationsPersistImpl {
 
 	public static void addUser(User u) throws SQLException {
 		String query = "INSERT INTO user " + 
-		"(firstName, lastName, email, address, avatarUrl)" +
+		"(firstName, lastName, email, address, password)" +
 		" VALUES ('" + u.getFirstName() + "', '" + u.getLastName() + "', '" + 
-		u.getEmail() + "', '" + u.getAddress() + "', '" + u.getAvatarUrl() +"');";
+		u.getEmail() + "', '" + u.getAddress() + "', '"+u.getPassword()+"');";
 		
 		DBAccessInterface.create(query);
 	}
@@ -61,16 +66,15 @@ public class BGAnimationsPersistImpl {
 				"lastName = '"+u.getLastName()+"', "+
 				"email = '"+u.getEmail()+"', "+
 				"address = '"+u.getAddress()+"', "+
-				"avatarUrl = '"+u.getAvatarUrl()+"',"+
 				"isBanned= '"+u.getIsBanned()+"', "+
 				"isAdmin = '"+u.getIsAdmin()+
-				"' WHERE userId = '"+u.getUserId()+";";
+				"' WHERE userId = '"+u.getUserID()+";";
 				
 		DBAccessInterface.create(query);
 	}
 
 	public static void deleteUser(User u) throws SQLException {
-		String query = "DELETE FROM user WHERE user.userId = " + u.getUserId() + ";";
+		String query = "DELETE FROM user WHERE user.userId = " + u.getUserID() + ";";
 		DBAccessInterface.delete(query);
 	}
 
@@ -78,7 +82,7 @@ public class BGAnimationsPersistImpl {
 		throws SQLException, RuntimeException {
 			
 		String query = "SELECT isBanned FROM user WHERE user.userId = " +
-			u.getUserId() + ";";
+			u.getUserID() + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		
 		if (rs.next()) {
@@ -90,20 +94,20 @@ public class BGAnimationsPersistImpl {
 
 	public static void banUser(User u) throws SQLException {
 		String query = "UPDATE user SET isBanned = True WHERE user.userId = " + 
-			u.getUserId()+";";
+			u.getUserID()+";";
 		DBAccessInterface.create(query);
 	}
 
 	public static void unbanUser(User u) throws SQLException {
 		String query = "UPDATE user SET isBanned = False WHERE user.userId = " + 
-			u.getUserId()+";";
+			u.getUserID()+";";
 		DBAccessInterface.create(query);
 	}
 	
-	public static ArrayList<int> getAllAdministrators() throws SQLException {
+	public static ArrayList<Integer> getAllAdministrators() throws SQLException {
 		String query = "SELECT userId FROM user WHERE user.isAdmin = TRUE;";
 		ResultSet rs = DBAccessInterface.retrieve(query);
-		ArrayList<int> admins = new ArrayList<int>();
+		ArrayList<Integer> admins = new ArrayList<Integer>();
 		
 		while(rs.next()) {
 			admins.add(rs.getInt("userId"));
@@ -117,7 +121,7 @@ public class BGAnimationsPersistImpl {
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		ArrayList<User> users = new ArrayList<User>();
 		
-		while(rs.next()) {
+	/*	while(rs.next()) {
 			int userId = rs.getInt("userId");
 			users.add(new User(userId, rs.getString("firstName"),
 				rs.getString("lastName"), rs.getString("email"), 
@@ -125,20 +129,20 @@ public class BGAnimationsPersistImpl {
 				rs.getBoolean("isBanned"), getAllBookingOrdersWithUser(userId),
 				getAllCreditCardsWithUser(userId));
 		}
-		
+	*/	
 		return users;
 	}
 	
 	public static void setAdministrator(User u) throws SQLException {
 		String query = "UPDATE isAdmin SET isAdmin = TRUE where user.userId = " +
-			u.getUserId()+";";
+			u.getUserID()+";";
 		DBAccessInterface.create(query);
 	}
 	
 	public static void removeAdministrator(User u) throws SQLException {
 		String query = "UPDATE isAdmin SET isAdmin = FALSE where user.userId = " +
-			u.getUserId()+";";
-		DbAccessInterface.create(query);
+			u.getUserID()+";";
+		DBAccessInterface.create(query);
 	}
 	
 	/** Get data from creditcard table **/
@@ -146,36 +150,36 @@ public class BGAnimationsPersistImpl {
 	public static ArrayList<Card> getAllCardForUser(User u) throws SQLException {
 		String query = "SELECT creditcard, type, expirationDate, " +
 		"billingAddress, securityCode, user_userId FROM user JOIN creditcard " +
-		"ON user.userId = creditcard.user_userId WHERE userId = " u.getUserID() + ";";"
+		"ON user.userId = creditcard.user_userId WHERE userId = " +u.getUserID() + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);	
 		ArrayList<Card> cards = new ArrayList<Card>();
 		
-		while(rs.next()) {
+	/*	while(rs.next()) {
 			cards.add(new Card(rs.getString("creditcard"), rs.getString("type"),
 				rs.getDate("expirationDate"), rs.getString("billingAddress"),
 				rs.getInt("securityCode"), rs.getInt("user_userId")));
 		}
-		
+	*/	
 		return cards;
 	}
 
 	public static void addCard(User u, Card c) throws SQLException {
 		String query = "INSERT INTO creditcard " + 
 		"(creditcard, type, expirationDate, billingAddress, securityCode, userId)" +
-		" VALUES ('" + c.getCreditCardNum() + "', '" + c.getCardType() + "', '" + 
+		" VALUES ('" + c.getCreditCard() + "', '" + c.getType() + "', '" + 
 		c.getExpirationDate() + "', '" + c.getBillingAddress() + "', '" + 
-		c.getSecurityCode() + "', '" + c.getUserId() + "');";
+		c.getSecurityCode() + "', '" + u.getUserID() + "');";
 		
 		DBAccessInterface.create(query);
 	}
 	
 	public static void removeCard(Card c) throws SQLException {
 		String query = "DELETE FROM creditcard WHERE creditcard.creditcard = " 
-		+ c.getCreditCardNum() + ";";
+		+ c.getCreditCard() + ";";
 		
 		DBAccessInterface.delete(query);
 	}
-	
+/*	
 	public static ArrayList<BookingOrder> getAllBookingOrdersWithUser(int userId) 
 		throws SQLException {
 		String query = "SELECT bookingId, date, numTickets, promoCode, subtotal, " +
@@ -210,7 +214,7 @@ public class BGAnimationsPersistImpl {
 		return c;
 	}
 
-	/** Get data from bookingOrder **/
+	
 	
 	public static BookingOrder getBookingOrder(int bookingId) 
 		throws SQLException, RuntimeException {
@@ -264,7 +268,7 @@ public class BGAnimationsPersistImpl {
 		DBAccessInterface.create(query);
 	}
 	
-	/** Get data from movie **/
+	
 	
 	public static void updateMovie(Movie m) throws SQLException {
 		String query = "UPDATE movie "+
@@ -316,7 +320,7 @@ public class BGAnimationsPersistImpl {
 		}
 	}
 	
-	/** Gets data from ticket **/
+
 	
 	public static Ticket getTicket(int ticketId) 
 		throws SQLException, RuntimeException {
@@ -367,7 +371,7 @@ public class BGAnimationsPersistImpl {
 		DBAccessInterface.delete(query);
 	}
 	
-	/** Gets data from showtime **/
+	
 	
 	public static ArrayList<Showtime> getShowtimesForMovie(int movieId) 
 		throws SQLException, RuntimeException {
@@ -428,7 +432,7 @@ public class BGAnimationsPersistImpl {
 		DBAccessInterface.delete(query);
 	}
 	
-	/** Gets data from movieReview **/
+	
 	
 	public static ArrayList<MovieReview> getReviewsForMovie(Movie m) throws SQLException {
 		String query = "SELECT reviewId, userId, review, movie_movieId FROM " +
@@ -438,13 +442,13 @@ public class BGAnimationsPersistImpl {
 		
 		while (rs.next()) {
 			r.add(new MovieReview(rs.getInt("reviewId"), rs.getInt("userId"),
-				rs.getString("review")))
+				rs.getString("review")));
 		}
 		
 		return r;
 	}
 	
-	public static void updateReview(Review r) throws SQLException {
+	public static void updateReview(MovieReview r) throws SQLException {
 		String query = "UPDATE movieReview "+
 			"SET userId = '"+r.getUserId()+"', "+
 				"review = '"+r.getReview()+"', "+
@@ -454,7 +458,7 @@ public class BGAnimationsPersistImpl {
 		DBAccessInterface.create(query);
 	}
 	
-	public static void createNewReview(Review r) throws SQLException {
+	public static void createNewReview(MovieReview r) throws SQLException {
 		String query = "INSERT INTO movieReview " + 
 		"(userId, review, movie_movieId) " +
 		" VALUES ('" + r.getUserId() + "', '" + r.getReview() + "', '" + 
@@ -470,7 +474,7 @@ public class BGAnimationsPersistImpl {
 		DBAccessInterface.delete(query);
 	}
 	
-	/** Get data from hall **/
+	
 	
 	public static Hall getHall(int hallId) 
 		throws SQLException, RuntimeException {
@@ -514,7 +518,7 @@ public class BGAnimationsPersistImpl {
 		DBAccessInterface.delete(query);
 	}
 	
-	/** Get data from seats **/
+	
 	
 	public static Seat getSeat(int seatId) throws SQLException, RuntimeException {
 		String query = "SELECT isReserved, showId, hall_hallId FROM seat " +
@@ -554,4 +558,5 @@ public class BGAnimationsPersistImpl {
 		
 		DBAccessInterface.delete(query);
 	}
+*/
 }
