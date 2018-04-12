@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--  This site was created in Webflow. http://www.webflow.com  -->
-<!--  Last Published: Thu Apr 12 2018 13:33:36 GMT+0000 (UTC)  -->
+<!--  Last Published: Thu Apr 12 2018 16:48:50 GMT+0000 (UTC)  -->
 <html data-wf-page="5aca7dd9af4ae86fec30fd78" data-wf-site="5aa6bf1441b9c7b66ebd3a3b">
 <head>
   <meta charset="utf-8">
@@ -27,7 +27,7 @@
       <div class="container-8 w-container"><a href="index.html" class="w-nav-brand"><img src="images/bganimations.png" width="250.5" class="image-4"></a>
         <nav role="navigation" class="w-clearfix w-nav-menu"><a href="index.html" class="nav-link w-nav-link">Home</a><a href="#" class="nav-link w-nav-link">Movies</a><a href="myaccount.html" class="nav-link w-nav-link">My Account</a>
           <div class="form-block-2 w-clearfix w-form">
-            <form id="email-form" name="email-form" data-name="Email Form" action="Servlet" method="get" class="form-3 w-clearfix"><input type="submit" name="submit" value="Log Out" data-wait="Please wait..." class="submit-button-7 w-button"></form>
+            <form id="email-form" name="email-form" data-name="Email Form" action="http://Servlet" class="form-3 w-clearfix"><input type="submit" value="Log Out" data-wait="Please wait..." class="submit-button-7 w-button"></form>
             <div class="w-form-done">
               <div>Thank you! Your submission has been received!</div>
             </div>
@@ -43,11 +43,11 @@
     </div>
   </div>
   <div>
-    <h1 class="heading-4">Hey ${NAME}!</h1>
+    <h1 class="heading-4">Hey Danny!</h1>
     <p class="heading-4">Here you can update your profile</p>
   </div>
   <div class="heading-4 w-form">
-    <form id="personalInformationForm" name="email-form" data-name="Email Form" action="Servlet" method="get" class="form">
+    <form id="personalInformationForm" name="email-form" data-name="Email Form" action="http://Servlet" class="form">
       <div class="section-12"><img src="images/Asset_14x.png" width="32">
         <p class="paragraph-8"><strong class="bold-text">Personal Information</strong></p><label for="firstName" class="field-label-3">First Name</label><input type="text" class="w-input" maxlength="256" name="firstName" data-name="firstName" placeholder="Enter your first name" id="firstName" required=""><label for="lastName" class="field-label-3">Last Name</label><input type="text" class="w-input" maxlength="256" name="lastName" data-name="lastName" placeholder="Enter your last name" id="lastName" required=""></div>
     </form>
@@ -83,6 +83,18 @@
           <div class="w-col w-col-6"><label for="state">State</label><input type="text" class="w-input" maxlength="256" name="state" data-name="state" placeholder="Enter your state" id="state" required=""></div>
           <div class="w-col w-col-6"><label for="zipCode-2" class="field-label-2">Zip Code</label><input type="text" class="text-field-2 w-input" maxlength="256" name="zipCode" data-name="zipCode" placeholder="Enter your zip code" id="zipCode-2" required=""></div>
         </div><input type="submit" value="Update Profile" data-wait="Please wait..." class="submit-button-3 w-button"></div>
+    </form>
+    <div class="w-form-done">
+      <div>Thank you! Your submission has been received!</div>
+    </div>
+    <div class="w-form-fail">
+      <div>Oops! Something went wrong while submitting the form.</div>
+    </div>
+  </div>
+  <div class="heading-4 w-form">
+    <form id="accountForm" name="email-form" data-name="Email Form" action="http://Servlet" class="form">
+      <p class="paragraph-8"><strong class="bold-text">Activation Code</strong></p>
+      <div class="section-12"><input type="text" class="w-input" maxlength="256" name="streetAddress-3" data-name="Street Address 3" placeholder="Enter Code " id="streetAddress-3" required=""><input type="submit" value="Activate Account!" data-wait="Please wait..." class="submit-button-3 w-button"></div>
     </form>
     <div class="w-form-done">
       <div>Thank you! Your submission has been received!</div>

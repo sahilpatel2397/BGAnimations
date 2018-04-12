@@ -83,30 +83,78 @@ public class Servlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String button = request.getParameter("submit");
+		HttpSession session = request.getSession();
 		
+		int promotion;
 		//if there is a register request
 		if (button.equals("Register")){
+			if (request.getParameter("checkbox")!=null){
+				promotion = 1;
+			}else{
+				promotion = 0;
+			}
 			String firstName = request.getParameter("firstName");
 			String lastName = request.getParameter("lastName");
 			String username = request.getParameter("email");
 			String password = request.getParameter("password");
 			String confPassword = request.getParameter("confirmPassword");
 			String address = request.getParameter("billingAddress");
-			
-			User user = new User(firstName,lastName, username, address, password);
+			int activationCode = 0;
+			int isBanned = 0;
+			int isAdmin = 0;
+			User user = new User(firstName,lastName, username, address, password, isBanned, isAdmin, activationCode, promotion);
 			try {
 				BGAnimationPersistImpl.addUser(user);
-				HttpSession session = request.getSession();
 				session.setAttribute("user", user);
 				root.put("NAME", user.getFirstName());
 				runTemplate(request,response,"myaccount");
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				System.out.println("SQL Error");
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchProviderException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
 		}
 	
+		if (button.equals("My Account")){
+			if (null==session.getAttribute("user")){
+				try {
+					runTemplate(request,response,"loginpage");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else{
+				User user = (User)request.getSession().getAttribute("user");
+				root.put("NAME", user.getFirstName());
+				try {
+					runTemplate(request,response,"myaccount");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		if (button.equals("Forget Password?")){
+			try {
+				BGAnimationPersistImpl.checkUser(request.getParameter("userName"));
+			} catch (NoSuchAlgorithmException | NoSuchProviderException | SQLException e) {
+				try {
+					runTemplate(request,response,"usernamenotrecognized.ftl");
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				e.printStackTrace();
+			}
+		}
+		
 		//if there is a login request
 		if (button.equals("Login")){
 			System.out.println("ENTERS");
@@ -138,10 +186,15 @@ public class Servlet extends HttpServlet {
 			}
 			try {
 				 user1 = BGAnimationPersistImpl.getUser(username);
-				 HttpSession session = request.getSession();
+				 session = request.getSession();
 				 session.setAttribute("user", user1);
 				 root.put("NAME", user1.getFirstName());
+				 if (user1.getIsAdmin()==1){
+					 runTemplate(request,response,"admin.ftl");
+				 }
+				 else{
 				 runTemplate(request,response,"myaccount");
+				 }
 				} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -184,7 +237,11 @@ public class Servlet extends HttpServlet {
 		if(button.equals("Log Out")){
 			request.changeSessionId();
 			request.getSession().invalidate();
-			response.sendRedirect("index.html");		
+			try{
+			response.sendRedirect("/finalProj/");
+			}catch(Exception e){
+				
+			}
 		}
 		
 	}

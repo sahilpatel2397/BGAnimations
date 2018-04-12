@@ -20,12 +20,12 @@ public class BGAnimationPersistImpl {
 		throws SQLException, RuntimeException, NoSuchAlgorithmException,
 		NoSuchProviderException {
 		
-		String encryptedPassword = PasswordHandler.getSecurePassword(password);
+		//String encryptedPassword = PasswordHandler.getSecurePassword(password);
 		String query = "SELECT password FROM user WHERE user.email=\""+email+"\";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		
 		if (rs.next()) {
-			if (rs.getString("password").equals(encryptedPassword)) {
+			if (rs.getString("password").equals(password)) {
 				return true;
 			} else {
 				System.out.println("ENTERS!@@#");
@@ -45,7 +45,7 @@ public class BGAnimationPersistImpl {
 			return new User(rs.getInt("userId"), rs.getString("firstName"),
 				rs.getString("lastName"), rs.getString("email"),
 				rs.getString("address"), 
-				rs.getBoolean("isBanned"), rs.getBoolean("isAdmin"));
+				rs.getInt("isBanned"), rs.getInt("isAdmin"));
 		} else {
 			throw new RuntimeException(DB_ERR_MSG);
 		}
@@ -56,25 +56,32 @@ public class BGAnimationPersistImpl {
 		Random rand = new Random();
 		int activationCode = rand.nextInt(30000) + 1000;
 		String query = "INSERT INTO user" + 
-		"(firstName, lastName, email, address, avatarUrl, isBanned, isAdmin, "+
-		"password, activationCode)" +
+		"(firstName, lastName, email, address, isBanned, isAdmin, "+
+		"password, sendPromotions, activationCode, isActivated)" +
 		" VALUES('" + u.getFirstName() + "', '" + u.getLastName() + "', '" + 
-		u.getEmail() + "', '" + u.getAddress() + "', '"+u.getAvatarUrl() + "', '"+u.getIsBanned() + "', '"+
-		u.getIsAdmin() + "', '"+PasswordHandler.getSecurePassword(u.getPassword()) + "', '"+
-		activationCode + "');";
-		
+		u.getEmail() + "', '" + u.getAddress() + "', '"+u.getIsBanned() + "', '"+
+		u.getIsAdmin() + "', '"+u.getPassword() + "', '"+ u.getSendPromotions() + "', "
+		+activationCode + ", " + 0+ ");";
 		DBAccessInterface.create(query);
-		EmailHandler.newUserEmail(u.getEmail(), u.getFirstName(), activationCode);
+		//EmailHandler.newUserEmail(u.getEmail(), u.getFirstName(), activationCode);
+	}
+	
+	public static void checkUser(String email) 
+			throws SQLException, NoSuchAlgorithmException, NoSuchProviderException {
+		String query = "SELECT email FROM user WHERE email ='"+email+"';";
+		ResultSet rs = DBAccessInterface.retrieve(query);
 	}
 	
 	public static boolean verifyUserActivation(User u, int providedCode) 
 			throws SQLException, RuntimeException {
-		String query = "";
+		String query = "SELECT activationCode FROM user WHERE user.userId = '" +
+			u.getUserID() + "';";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		
 		if (rs.next()) {
 			if (rs.getInt("activationCode") == providedCode) {
-				query = ""; // this should set isActivated to true
+				query = "UPDATE user SET isActivated = 1 WHERE user.userId = '" + 
+			u.getUserID() +";"; // this should set isActivated to true
 				DBAccessInterface.create(query);
 				return true;
 			} else {

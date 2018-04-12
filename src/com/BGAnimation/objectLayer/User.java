@@ -8,9 +8,11 @@ public class User {
 	private String email;
 	private String address;
 	private String avatarUrl;
-	private boolean isBanned;
-	private boolean isAdmin;
+	private int isBanned;
+	private int isAdmin;
 	private String password;
+	private int activationCode;
+	private int promotion;
 
 	public User() {
 		
@@ -72,19 +74,31 @@ public class User {
 		this.avatarUrl = avatarUrl;
 	}
 
-	public boolean getIsBanned() {
+	public int getIsBanned() {
 		return isBanned;
 	}
 
-	public void setBanned(boolean isBanned) {
+	public void setBanned(int isBanned) {
 		this.isBanned = isBanned;
 	}
 
-	public boolean getIsAdmin(){
+	public int getIsAdmin(){
 		return isAdmin;
 	}
 	
-	public User(int userID, String firstName, String lastName, String email, String address, boolean isBanned, boolean isAdmin) {
+	public int getSendPromotions(){
+		return this.promotion;
+	}
+	
+	public void setSendPromotions(int promotion){
+		this.promotion = promotion;
+	}
+	
+	public void setIsAdmin(int admin){
+		this.isAdmin = admin;
+	}
+	
+	public User(int userID, String firstName, String lastName, String email, String address, int isBanned, int isAdmin) {
 		this.userID = userID;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -93,13 +107,17 @@ public class User {
 		this.isBanned = isBanned;
 		this.isAdmin = isAdmin;
 	}
-
-	public User(String firstName, String lastName, String email, String address, String password) {
+	
+	public User(String firstName, String lastName, String email, String address, String password, int isBanned, int isAdmin, int activationCode, int promotion) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.address = address;
 		this.password = password;
+		this.activationCode = activationCode;
+		this.promotion = promotion;
+		this.isAdmin = isAdmin;
+		this.isBanned = isBanned;
 	}
 
 
