@@ -55,11 +55,12 @@ public class BGAnimationPersistImpl {
 			throws SQLException, NoSuchAlgorithmException, NoSuchProviderException {
 		Random rand = new Random();
 		int activationCode = rand.nextInt(30000) + 1000;
-		String query = "INSERT INTO user " + 
-		"(userId, firstName, lastName, email, address, password, activationCode)" +
-		" VALUES (1000 + '" + u.getFirstName() + "', '" + u.getLastName() + "', '" + 
-		u.getEmail() + "', '" + u.getAddress() + "', '"+
-		PasswordHandler.getSecurePassword(u.getPassword()) +"', '" +
+		String query = "INSERT INTO user" + 
+		"(firstName, lastName, email, address, avatarUrl, isBanned, isAdmin, "+
+		"password, activationCode)" +
+		" VALUES('" + u.getFirstName() + "', '" + u.getLastName() + "', '" + 
+		u.getEmail() + "', '" + u.getAddress() + "', '"+u.getAvatarUrl() + "', '"+u.getIsBanned() + "', '"+
+		u.getIsAdmin() + "', '"+PasswordHandler.getSecurePassword(u.getPassword()) + "', '"+
 		activationCode + "');";
 		
 		DBAccessInterface.create(query);
