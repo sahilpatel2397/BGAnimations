@@ -107,7 +107,10 @@ public class BGAnimationPersistImpl {
 				"email = '"+u.getEmail()+"', "+
 				"address = '"+u.getAddress()+"', "+
 				"isBanned= '"+u.getIsBanned()+"', "+
-				"isAdmin = '"+u.getIsAdmin()+
+				"isAdmin = '"+u.getIsAdmin()+"', "+
+				"password = '" +u.getPassword()+"', "+
+				"sendPromotions = '"+u.getSendPromotions()+"', "+
+			//	"isActivated = '"+u.getIsActivated()+
 				"' WHERE userId = '"+u.getUserID()+";";
 				
 		DBAccessInterface.create(query);
