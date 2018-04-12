@@ -1,11 +1,11 @@
 package com.BGAnimation.persistLayer;
 
-
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.BGAnimation.objectLayer.*;
 
@@ -52,14 +52,19 @@ public class BGAnimationPersistImpl {
 		}
 	}
 
-	public static void addUser(User u) throws SQLException {
+	public static void addUser(User u) 
+			throws SQLException, NoSuchAlgorithmException, NoSuchProviderException {
+		Random rand = new Random();
+		int activationCode = rand.nextInt(30000) + 1000;
 		String query = "INSERT INTO user " + 
-		"(firstName, lastName, email, address, password)" +
+		"(firstName, lastName, email, address, password, activationCode)" +
 		" VALUES ('" + u.getFirstName() + "', '" + u.getLastName() + "', '" + 
 		u.getEmail() + "', '" + u.getAddress() + "', '"+
-		PasswordHandler.getSecurePassword(u.getPassword())+"');";
+		PasswordHandler.getSecurePassword(u.getPassword()) +"', '" +
+		activationCode + "');";
 		
 		DBAccessInterface.create(query);
+		EmailHandler.newUserEmail(u.getEmail(), u.getFirstName(), activationCode);
 	}
 
 	public static void updateUser(User u) throws SQLException {
