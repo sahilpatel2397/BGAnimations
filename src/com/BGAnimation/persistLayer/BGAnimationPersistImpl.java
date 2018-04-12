@@ -68,10 +68,16 @@ public class BGAnimationPersistImpl {
 		EmailHandler.newUserEmail(u.getEmail(), u.getFirstName(), activationCode);
 	}
 	
-	public static void checkUser(String email) 
+	public static boolean checkUser(String email) 
 			throws SQLException, NoSuchAlgorithmException, NoSuchProviderException {
 		String query = "SELECT email FROM user WHERE email ='"+email+"';";
 		ResultSet rs = DBAccessInterface.retrieve(query);
+		if (!rs.next() ) {
+		    return false;
+		} 
+		else{
+			return true;
+		}
 	}
 	
 	public static boolean verifyUserActivation(User u, int providedCode) 
