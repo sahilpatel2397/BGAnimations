@@ -21,7 +21,7 @@ public class BGAnimationPersistImpl {
 		throws SQLException, RuntimeException, NoSuchAlgorithmException,
 		NoSuchProviderException {
 		
-		String encryptedPassword = PasswordHandler.getSecurePassword(password);
+		//String encryptedPassword = PasswordHandler.getSecurePassword(password);
 		String query = "SELECT password FROM user WHERE user.email=\""+email+"\";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		
@@ -56,8 +56,7 @@ public class BGAnimationPersistImpl {
 		String query = "INSERT INTO user " + 
 		"(firstName, lastName, email, address, password)" +
 		" VALUES ('" + u.getFirstName() + "', '" + u.getLastName() + "', '" + 
-		u.getEmail() + "', '" + u.getAddress() + "', '" + 
-		PasswordHandler.getSecurePassword(u.getPassword())+"');";
+		u.getEmail() + "', '" + u.getAddress() + "', '"+u.getPassword()+"');";
 		
 		DBAccessInterface.create(query);
 	}
