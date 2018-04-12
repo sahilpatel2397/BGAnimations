@@ -20,7 +20,7 @@ public class BGAnimationPersistImpl {
 		throws SQLException, RuntimeException, NoSuchAlgorithmException,
 		NoSuchProviderException {
 		
-		//String encryptedPassword = PasswordHandler.getSecurePassword(password);
+		String encryptedPassword = PasswordHandler.getSecurePassword(password);
 		String query = "SELECT password FROM user WHERE user.email=\""+email+"\";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		
@@ -28,7 +28,9 @@ public class BGAnimationPersistImpl {
 			if (rs.getString("password").equals(password)) {
 				return true;
 			} else {
-				System.out.println("ENTERS!@@#");
+				System.out.println("The password that was provided is: " + password);
+				System.out.println("The encrypted version of ^ is: " + encryptedPassword);
+				System.out.println("The password stored in the database is: " + rs.getString("password"));
 				return false;
 			}
 		} else {
@@ -63,7 +65,7 @@ public class BGAnimationPersistImpl {
 		u.getIsAdmin() + "', '"+u.getPassword() + "', '"+ u.getSendPromotions() + "', "
 		+activationCode + ", " + 0+ ");";
 		DBAccessInterface.create(query);
-		//EmailHandler.newUserEmail(u.getEmail(), u.getFirstName(), activationCode);
+		EmailHandler.newUserEmail(u.getEmail(), u.getFirstName(), activationCode);
 	}
 	
 	public static boolean checkUser(String email) 
