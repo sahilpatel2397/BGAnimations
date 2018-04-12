@@ -16,7 +16,6 @@ public class BGAnimationPersistImpl {
 
 	/** Get data from the user table **/
 	
-	// @Stephen
 	public static boolean authenticateUser(String email, String password) 
 		throws SQLException, RuntimeException, NoSuchAlgorithmException,
 		NoSuchProviderException {
@@ -57,14 +56,32 @@ public class BGAnimationPersistImpl {
 		Random rand = new Random();
 		int activationCode = rand.nextInt(30000) + 1000;
 		String query = "INSERT INTO user " + 
-		"(firstName, lastName, email, address, password, activationCode)" +
-		" VALUES ('" + u.getFirstName() + "', '" + u.getLastName() + "', '" + 
+		"(userId, firstName, lastName, email, address, password, activationCode)" +
+		" VALUES (1000 + '" + u.getFirstName() + "', '" + u.getLastName() + "', '" + 
 		u.getEmail() + "', '" + u.getAddress() + "', '"+
 		PasswordHandler.getSecurePassword(u.getPassword()) +"', '" +
 		activationCode + "');";
 		
 		DBAccessInterface.create(query);
 		EmailHandler.newUserEmail(u.getEmail(), u.getFirstName(), activationCode);
+	}
+	
+	public static boolean verifyUserActivation(User u, int providedCode) 
+			throws SQLException, RuntimeException {
+		String query = "";
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		
+		if (rs.next()) {
+			if (rs.getInt("activationCode") == providedCode) {
+				query = ""; // this should set isActivated to true
+				DBAccessInterface.create(query);
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			throw new RuntimeException(DB_ERR_MSG);
+		}
 	}
 
 	public static void updateUser(User u) throws SQLException {
