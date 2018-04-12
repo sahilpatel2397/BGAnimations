@@ -63,7 +63,7 @@ public class BGAnimationPersistImpl {
 		u.getIsAdmin() + "', '"+u.getPassword() + "', '"+ u.getSendPromotions() + "', "
 		+activationCode + ", " + 0+ ");";
 		DBAccessInterface.create(query);
-		//EmailHandler.newUserEmail(u.getEmail(), u.getFirstName(), activationCode);
+		EmailHandler.newUserEmail(u.getEmail(), u.getFirstName(), activationCode);
 	}
 	
 	public static void checkUser(String email) 
