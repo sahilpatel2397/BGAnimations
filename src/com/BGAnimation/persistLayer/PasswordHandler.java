@@ -62,7 +62,7 @@ public class PasswordHandler {
         return salt.toString();
     }
     
-    protected static String generateRandomPassword() {
+    public static String generateRandomPassword() {
     	String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new SecureRandom();
         int password_length = random.nextInt((15 - 8) + 1) + 8;

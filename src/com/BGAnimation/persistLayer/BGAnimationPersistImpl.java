@@ -5,6 +5,7 @@ import java.security.NoSuchProviderException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 import com.BGAnimation.objectLayer.*;
@@ -429,7 +430,7 @@ public class BGAnimationPersistImpl {
 		
 		DBAccessInterface.delete(query);
 	}
-	/*
+
 	public static ArrayList<Showtime> getShowtimesForMovie(int movieId) 
 		throws SQLException, RuntimeException {
 			
@@ -454,7 +455,7 @@ public class BGAnimationPersistImpl {
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		
 		if (rs.next()) {
-			return new Showtime(showtimeId, rs.getInt("hallId"),
+			return new Showtime(rs.getInt("hallId"),
 				rs.getDate("time"), rs.getInt("numSeats"),
 				rs.getInt("movie_movieId"));
 		} else {
@@ -467,7 +468,7 @@ public class BGAnimationPersistImpl {
 			"SET hallId = '"+s.getHallId()+"', "+
 				"time = '"+s.getTime()+"', "+
 				"numSeats = '"+s.getNumSeats()+"', "+
-				"movie_movieId = '"+ s.getMovie_movieId()+
+				"movie_movieId = '"+ s.getMovieId()+
 				"' WHERE showId = '"+ s.getShowId()+";";
 				
 		DBAccessInterface.create(query);
@@ -477,7 +478,7 @@ public class BGAnimationPersistImpl {
 		String query = "INSERT INTO showtime " + 
 		"(hallId, time, numSeats, movie_movieId) " +
 		" VALUES ('" + s.getHallId() + "', '" + s.getTime() + "', '" + 
-		s.getNumSeats() + "', '" + s.getMovieId_movieId() + "');";
+		s.getNumSeats() + "', '" + s.getMovieId() + "');";
 		
 		DBAccessInterface.create(query);
 	}
@@ -488,18 +489,15 @@ public class BGAnimationPersistImpl {
 		
 		DBAccessInterface.delete(query);
 	}
-	
-	
-	
 	public static ArrayList<MovieReview> getReviewsForMovie(Movie m) throws SQLException {
 		String query = "SELECT reviewId, userId, review, movie_movieId FROM " +
 		"movieReview WHERE movieReview.movie_movieId = " + m.getMovieId() + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
-		ArrayList<MovieReview> r = new ArrayList<Review>();
+		ArrayList<MovieReview> r = new ArrayList<MovieReview>();
 		
 		while (rs.next()) {
 			r.add(new MovieReview(rs.getInt("reviewId"), rs.getInt("userId"),
-				rs.getString("review")));
+				rs.getString("review"), rs.getInt("movie_movieId")));
 		}
 		
 		return r;
@@ -509,7 +507,7 @@ public class BGAnimationPersistImpl {
 		String query = "UPDATE movieReview "+
 			"SET userId = '"+r.getUserId()+"', "+
 				"review = '"+r.getReview()+"', "+
-				"movie_movieId = '"+ s.getMovie_movieId()+
+				"movie_movieId = '"+ r.getMovieId()+
 				"' WHERE reviewId = '"+ r.getReviewId()+";";
 				
 		DBAccessInterface.create(query);
@@ -519,20 +517,18 @@ public class BGAnimationPersistImpl {
 		String query = "INSERT INTO movieReview " + 
 		"(userId, review, movie_movieId) " +
 		" VALUES ('" + r.getUserId() + "', '" + r.getReview() + "', '" + 
-		r.getMovie_movieId() + "');";
+		r.getMovieId() + "');";
 		
 		DBAccessInterface.create(query);
 	}
 	
-	public static void deleteReview(Review r) throws SQLException {
+	public static void deleteReview(MovieReview r) throws SQLException {
 		String query = "DELETE FROM movieReview WHERE " +
 		"movieReview.reviewId = " + r.getReviewId()+ ";";
 		
 		DBAccessInterface.delete(query);
 	}
-	
-	
-	
+	/* 
 	public static Hall getHall(int hallId) 
 		throws SQLException, RuntimeException {
 		
@@ -614,5 +610,5 @@ public class BGAnimationPersistImpl {
 		"seat.seatId = " + s.getSeatId()+ ";";
 		
 		DBAccessInterface.delete(query);
-	} */
+	}  */
 }
