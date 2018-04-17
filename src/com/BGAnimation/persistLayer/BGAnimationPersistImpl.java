@@ -138,7 +138,7 @@ public class BGAnimationPersistImpl {
 				"isAdmin = '"+u.getIsAdmin()+"', "+
 				"password = '" +u.getPassword()+"', "+
 				"sendPromotions = '"+u.getSendPromotions()+"', "+
-				"isActivated = "+u.getIsActivated()+", "+
+				"isActivated = '"+u.getIsActivated()+"', "+
 				"password = '" + encryptedPasswordData[0] + "', " +
 				"salt = '" + encryptedPasswordData[1] +
 				"' WHERE userId = "+u.getUserID()+";";

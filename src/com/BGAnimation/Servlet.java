@@ -17,6 +17,8 @@ import javax.servlet.http.HttpSession;
 
 import com.BGAnimation.objectLayer.User;
 import com.BGAnimation.persistLayer.BGAnimationPersistImpl;
+import com.BGAnimation.persistLayer.EmailHandler;
+import com.BGAnimation.persistLayer.PasswordHandler;
 
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapperBuilder;
@@ -107,7 +109,7 @@ public class Servlet extends HttpServlet {
 				BGAnimationPersistImpl.addUser(user);
 				session.setAttribute("user", user);
 				root.put("NAME", user.getFirstName());
-				runTemplate(request,response,"myaccount");
+				runTemplate(request,response,"activationentrance");
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				System.out.println("SQL Error");
@@ -120,7 +122,32 @@ public class Servlet extends HttpServlet {
 			}
 			
 		}
-	
+		
+		if (button.equals("Activate")){
+			User u = (User)request.getSession().getAttribute("user");
+			String code = request.getParameter("code");
+			try {
+				boolean activated = BGAnimationPersistImpl.verifyUserActivation(u,Integer.parseInt(code.trim()));
+				if(activated){
+					u.setActivated();
+					BGAnimationPersistImpl.updateUser(u);
+					runTemplate(request,response,"myaccount");
+				}
+				else{
+					runTemplate(request,response,"activationentranceerror");
+				}
+			}catch (Exception e) {
+				// TODO Auto-generated catch block
+				try {
+					runTemplate(request,response,"activationentranceerror");
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		}
+		
+		
 		if (button.equals("My Account")){
 			if (null==session.getAttribute("user")){
 				try {
@@ -140,24 +167,39 @@ public class Servlet extends HttpServlet {
 				}
 			}
 		}
-		
+	
 		if (button.equals("Forget Password?")){
 			try {
-				BGAnimationPersistImpl.checkUser(request.getParameter("userName"));
-			} catch (NoSuchAlgorithmException | NoSuchProviderException | SQLException e) {
+				String username = request.getParameter("userName");
+				boolean c = BGAnimationPersistImpl.checkUser(request.getParameter("userName"));
+				User u = BGAnimationPersistImpl.getUser(username);
+				if (c){
+					String temp = PasswordHandler.generateRandomPassword();
+					runTemplate(request,response,"passwordrecoverysuccessful");
+					String body = "Hello there " + u.getFirstName() + "!\n\n" 
+							+ "It seems like you forgot your password\n" 
+							+ "Here is a temporary password: '"+temp+"'\n"
+							+ "Once logged in, be sure to change your password\n\n"
+							+"You're Welcome!\nTeam BGA";
+					EmailHandler.sendMail(username, "Forgot Password?", body);
+					u.setPassword(temp);
+					BGAnimationPersistImpl.updateUser(u);
+				}
+				else{
+					runTemplate(request,response,"usernamenotrecognized");
+				}
+			} catch (Exception e) {
 				try {
-					runTemplate(request,response,"usernamenotrecognized.ftl");
+					runTemplate(request,response,"usernamenotrecognized");
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				e.printStackTrace();
 			}
 		}
 		
 		//if there is a login request
 		if (button.equals("Login")){
-			System.out.println("ENTERS");
 			String username = request.getParameter("userName");
 			String password = request.getParameter("password");
 			User user1 = null;
@@ -188,12 +230,19 @@ public class Servlet extends HttpServlet {
 				 user1 = BGAnimationPersistImpl.getUser(username);
 				 session = request.getSession();
 				 session.setAttribute("user", user1);
-				 root.put("NAME", user1.getFirstName());
-				 if (user1.getIsAdmin()==1){
-					 runTemplate(request,response,"admin.ftl");
+				 boolean activated = BGAnimationPersistImpl.isActivated(user1);
+				 if (activated){
+					 if (user1.getIsAdmin()==1){
+						 root.put("NAME", user1.getFirstName());
+						 runTemplate(request,response,"admin");
+					 }
+					 else{
+						 root.put("NAME", user1.getFirstName());
+						 runTemplate(request,response,"myaccount");
+					 }
 				 }
 				 else{
-				 runTemplate(request,response,"myaccount");
+					 runTemplate(request,response,"activationentrance");
 				 }
 				} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -235,7 +284,8 @@ public class Servlet extends HttpServlet {
 		}
 		
 		if(button.equals("Log Out")){
-			request.getSession(false).invalidate();
+			request.changeSessionId();
+			request.getSession().invalidate();
 			try{
 			response.sendRedirect("/finalProj/");
 			}catch(Exception e){
