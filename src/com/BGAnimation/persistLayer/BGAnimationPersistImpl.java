@@ -528,7 +528,7 @@ public class BGAnimationPersistImpl {
 		
 		DBAccessInterface.delete(query);
 	}
-	/* 
+	
 	public static Hall getHall(int hallId) 
 		throws SQLException, RuntimeException {
 		
@@ -548,9 +548,9 @@ public class BGAnimationPersistImpl {
 	public static void updateHall(Hall h) throws SQLException {
 		String query = "UPDATE hall "+
 			"SET totalSeats = '"+h.getTotalSeats()+"', "+
-				"showtimes = '"+h.getShowtimes()+"', "+
+				"showtimes = '"+h.getShowtime()+"', "+
 				"numSeatsRemaining = '"+ h.getNumSeatsRemaining()+
-				"' WHERE hallId = '"+ h.hallId()+";";
+				"' WHERE hallId = '"+ h.getHallId()+";";
 				
 		DBAccessInterface.create(query);
 	}
@@ -558,7 +558,7 @@ public class BGAnimationPersistImpl {
 	public static void createNewHall(Hall h) throws SQLException {
 		String query = "INSERT INTO hall " + 
 		"(totalSeats, showtimes, numSeatsRemaining, showtime_showId) " +
-		" VALUES ('" + h.getTotalSeats() + "', '" + h.getShowtimes() + "', '" + 
+		" VALUES ('" + h.getTotalSeats() + "', '" + h.getShowtime() + "', '" + 
 		h.getNumSeatsRemaining() + "');";
 		
 		DBAccessInterface.create(query);
@@ -566,7 +566,7 @@ public class BGAnimationPersistImpl {
 	
 	public static void deleteHall(Hall h) throws SQLException {
 		String query = "DELETE FROM hall WHERE " +
-		"hall.hallId = " + h.hallId()+ ";";
+		"hall.hallId = " + h.getHallId()+ ";";
 		
 		DBAccessInterface.delete(query);
 	}
@@ -588,7 +588,7 @@ public class BGAnimationPersistImpl {
 	
 	public static void updateSeat(Seat s) throws SQLException {
 		String query = "UPDATE hall "+
-			"SET isReserved = '"+s.getIsReserved()+"', "+
+			"SET isReserved = '"+s.getSeatReservation()+"', "+
 				"showId = '"+s.getShowId()+"', "+
 				"hall_hallId = '"+ s.getHallId()+
 				"' WHERE seatId = '"+ s.getSeatId()+";";
@@ -599,8 +599,8 @@ public class BGAnimationPersistImpl {
 	public static void createNewSeat(Seat s) throws SQLException {
 		String query = "INSERT INTO seat " + 
 		"(isReserved, showId, hall_hallId) " +
-		" VALUES ('" + s.getIsReserved() + "', '" + s.getShowId() + "', '" + 
-		s.getHall_hallId() + "');";
+		" VALUES ('" + s.getSeatReservation() + "', '" + s.getShowId() + "', '" + 
+		s.getHallId() + "');";
 		
 		DBAccessInterface.create(query);
 	}
@@ -610,5 +610,5 @@ public class BGAnimationPersistImpl {
 		"seat.seatId = " + s.getSeatId()+ ";";
 		
 		DBAccessInterface.delete(query);
-	}  */
+	} 
 }
