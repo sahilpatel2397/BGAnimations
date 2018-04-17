@@ -126,7 +126,9 @@ public class BGAnimationPersistImpl {
 		}
 	}
 
-	public static void updateUser(User u) throws SQLException {
+	public static void updateUser(User u) 
+			throws SQLException, NoSuchAlgorithmException, NoSuchProviderException {
+		String encryptedPasswordData[] = PasswordHandler.encryptPassword(u.getPassword());
 		String query = "UPDATE user "+
 			"SET firstName = '"+u.getFirstName()+"', "+
 				"lastName = '"+u.getLastName()+"', "+
@@ -136,7 +138,9 @@ public class BGAnimationPersistImpl {
 				"isAdmin = '"+u.getIsAdmin()+"', "+
 				"password = '" +u.getPassword()+"', "+
 				"sendPromotions = '"+u.getSendPromotions()+"', "+
-			//	"isActivated = '"+u.getIsActivated()+
+				"isActivated = '"+u.getIsActivated()+"', "+
+				"password = '" + encryptedPasswordData[0] + ";, " +
+				"salt = '" + encryptedPasswordData[1] +
 				"' WHERE userId = '"+u.getUserID()+";";
 				
 		DBAccessInterface.create(query);

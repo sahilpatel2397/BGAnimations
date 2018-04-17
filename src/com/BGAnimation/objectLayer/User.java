@@ -13,6 +13,7 @@ public class User {
 	private String password;
 	private int activationCode;
 	private int promotion;
+	private int isActivated = 0;
 
 	public User() {
 		
@@ -124,11 +125,14 @@ public class User {
 		this.userID = userID;
 	}
 
-
-
-
-
-
+	public int getIsActivated() {
+		// TODO Auto-generated method stub
+		return isActivated;
+	}
+	
+	public void setActivated() {
+		this.isActivated = 1;
+	}
 	
 }
 

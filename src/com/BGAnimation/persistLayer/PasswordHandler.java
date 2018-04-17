@@ -8,6 +8,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
+import java.util.Random;
 
 public class PasswordHandler {
 
@@ -59,5 +60,16 @@ public class PasswordHandler {
         byte[] salt = new byte[16];
         sr.nextBytes(salt);
         return salt.toString();
+    }
+    
+    protected static String generateRandomPassword() {
+    	String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        Random random = new SecureRandom();
+        int password_length = random.nextInt((15 - 8) + 1) + 8;
+        StringBuilder sb = new StringBuilder(10);
+        for (int i = 0; i < password_length; i++) {
+            sb.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return sb.toString();
     }
 }
