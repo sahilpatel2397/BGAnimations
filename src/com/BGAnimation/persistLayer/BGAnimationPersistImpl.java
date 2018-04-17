@@ -5,7 +5,6 @@ import java.security.NoSuchProviderException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Random;
 
 import com.BGAnimation.objectLayer.*;
@@ -109,14 +108,14 @@ public class BGAnimationPersistImpl {
 	
 	public static boolean verifyUserActivation(User u, int providedCode) 
 			throws SQLException, RuntimeException {
-		String query = "SELECT activationCode FROM user WHERE user.userId = '" +
-			u.getUserID() + "';";
+		String query = "SELECT activationCode FROM user WHERE email = '" +
+			u.getEmail() + "';";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		
 		if (rs.next()) {
 			if (rs.getInt("activationCode") == providedCode) {
-				query = "UPDATE user SET isActivated = 1 WHERE user.userId = '" + 
-						u.getUserID() +";";
+				query = "UPDATE user SET isActivated = 1 WHERE email = '" + 
+						u.getEmail() +"';";
 				DBAccessInterface.create(query);
 				return true;
 			} else {
@@ -377,8 +376,6 @@ public class BGAnimationPersistImpl {
 			throw new RuntimeException(DB_ERR_MSG);
 		}
 	}
-	
-
 	
 	public static Ticket getTicket(int ticketId) 
 		throws SQLException, RuntimeException {

@@ -12,7 +12,6 @@ public class Movie{
 	private float ratings;
 	private String mpaaRating;
 	
-	
 	public Movie(){
 		
 	}
@@ -90,9 +89,4 @@ public class Movie{
 	public int getMovieId() {
 		return movieId;
 	}
-	
-	
-	
-	
-	
 }
