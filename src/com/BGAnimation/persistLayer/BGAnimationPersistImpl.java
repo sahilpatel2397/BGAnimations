@@ -27,9 +27,6 @@ public class BGAnimationPersistImpl {
 			if (rs.getString("password").equals(encryptedPassword)) {
 				return true;
 			} else {
-				System.out.println("The password that was provided is: " + password);
-				System.out.println("The encrypted version of ^ is: " + encryptedPassword);
-				System.out.println("The password stored in the database is: " + rs.getString("password"));
 				return false;
 			}
 		} else {
