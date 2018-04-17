@@ -284,8 +284,7 @@ public class Servlet extends HttpServlet {
 		}
 		
 		if(button.equals("Log Out")){
-			request.changeSessionId();
-			request.getSession().invalidate();
+			request.getSession(false).invalidate();
 			try{
 			response.sendRedirect("/finalProj/");
 			}catch(Exception e){
