@@ -1,7 +1,7 @@
 package com.BGAnimation.persistLayer;
 
 /**
- * Code adapted from @Michael Wiggins 
+ * Encryption adapted from @Michael Wiggins 
  */
 
 import java.security.MessageDigest;
