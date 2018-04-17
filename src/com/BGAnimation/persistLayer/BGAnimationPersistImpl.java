@@ -19,13 +19,12 @@ public class BGAnimationPersistImpl {
 	public static boolean authenticateUser(String email, String password) 
 		throws SQLException, RuntimeException, NoSuchAlgorithmException,
 		NoSuchProviderException {
-		
-		String encryptedPassword = PasswordHandler.getSecurePassword(password);
-		String query = "SELECT password FROM user WHERE user.email=\""+email+"\";";
+		String query = "SELECT password, salt FROM user WHERE user.email=\""+email+"\";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		
 		if (rs.next()) {
-			if (rs.getString("password").equals(password)) {
+			String encryptedPassword = PasswordHandler.getUserEncryptedPassword(password, rs.getString("salt"));
+			if (rs.getString("password").equals(encryptedPassword)) {
 				return true;
 			} else {
 				System.out.println("The password that was provided is: " + password);
@@ -57,13 +56,14 @@ public class BGAnimationPersistImpl {
 			throws SQLException, NoSuchAlgorithmException, NoSuchProviderException {
 		Random rand = new Random();
 		int activationCode = rand.nextInt(30000) + 1000;
+		String encryptedPassword[] = PasswordHandler.encryptPassword(u.getPassword());
 		String query = "INSERT INTO user" + 
 		"(firstName, lastName, email, address, isBanned, isAdmin, "+
-		"password, sendPromotions, activationCode, isActivated)" +
+		"password, sendPromotions, activationCode, isActivated, salt)" +
 		" VALUES('" + u.getFirstName() + "', '" + u.getLastName() + "', '" + 
 		u.getEmail() + "', '" + u.getAddress() + "', '"+u.getIsBanned() + "', '"+
-		u.getIsAdmin() + "', '"+u.getPassword() + "', '"+ u.getSendPromotions() + "', "
-		+activationCode + ", " + 0+ ");";
+		u.getIsAdmin() + "', '"+ encryptedPassword[0] + "', '"+ u.getSendPromotions() + "', "
+		+activationCode + ", " + 0 + ", '" + encryptedPassword[1] + "');";
 		DBAccessInterface.create(query);
 		EmailHandler.newUserEmail(u.getEmail(), u.getFirstName(), activationCode);
 	}
@@ -77,6 +77,35 @@ public class BGAnimationPersistImpl {
 		} 
 		else{
 			return true;
+		}
+	}
+	
+	public static boolean isActivated(User u) throws SQLException, RuntimeException {
+		String query = "SELECT isActivated FROM user WHERE user.userId = '" + 
+				u.getUserID() + "';";
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		
+		if (rs.next()) {
+			if (rs.getInt("isActivated") == 1) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			throw new RuntimeException(DB_ERR_MSG);
+		}
+	}
+	
+	public static boolean checkIfUserExists(String email) 
+			throws SQLException {
+		String query = "SELECT email FROM user WHERE user.email = '" +
+				email + "';";
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		
+		if (rs.next()) { // User exists
+			return true;
+		} else { // User doesn't exist
+			return false;
 		}
 	}
 	

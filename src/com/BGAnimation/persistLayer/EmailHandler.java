@@ -12,9 +12,9 @@ import javax.mail.internet.MimeMessage;
 
 public class EmailHandler {
 
-    final static String SYSTEM_EMAIL = "csci4050@gmail.com";
-    final static String SYSTEM_NAME = "CSCI 4050";
-    final static String PASSWORD = "thisisapassword";
+    final static String SYSTEM_EMAIL = "bganimation@wallou.net";
+    final static String SYSTEM_NAME = "BGAnimation Group";
+    final static String PASSWORD = "wearebga";
     
 	public static void newUserEmail(String email, String name, int code) {
 		String subject = "Welcome to BGAnimation!";

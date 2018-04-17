@@ -11,11 +11,11 @@ import java.security.SecureRandom;
 
 public class PasswordHandler {
 
-    protected static String getSecurePassword(String passwordToHash) 
+    protected static String[] encryptPassword(String passwordToHash) 
         throws NoSuchAlgorithmException, NoSuchProviderException {
             
         String generatedPassword = null;
-        String salt = getSalt();
+        String salt = generateSalt();
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(salt.getBytes());
@@ -28,10 +28,31 @@ public class PasswordHandler {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return generatedPassword;
+        
+        String data[] = {generatedPassword, salt};
+        return data;
     }
-
-    private static String getSalt() 
+    
+    protected static String getUserEncryptedPassword(String providedPassword, String salt) 
+    		throws NoSuchAlgorithmException, NoSuchProviderException {
+    	String generatedPassword = null;
+    	try {
+    		MessageDigest md = MessageDigest.getInstance("MD5");
+    		md.update(salt.getBytes());
+            byte[] bytes = md.digest(providedPassword.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for(int i=0; i< bytes.length ;i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            generatedPassword = sb.toString();
+    	} catch (NoSuchAlgorithmException e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return generatedPassword;
+    }
+    
+    private static String generateSalt() 
         throws NoSuchAlgorithmException, NoSuchProviderException {
             
         SecureRandom sr = SecureRandom.getInstance("SHA1PRNG", "SUN");
