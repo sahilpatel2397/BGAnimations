@@ -119,6 +119,10 @@ public class User {
 		this.isAdmin = isAdmin;
 		this.isBanned = isBanned;
 	}
+	
+	public User(int userID) {
+		this.userID = userID;
+	}
 
 
 

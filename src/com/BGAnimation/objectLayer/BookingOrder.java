@@ -2,7 +2,7 @@ package com.BGAnimation.objectLayer;
 
 import java.util.Date;
 
-class BookingOrder{
+public class BookingOrder{
     private int bookingId;
     private Date date;
     private int numTickets;
@@ -28,6 +28,22 @@ class BookingOrder{
     	this.userId = userId;
     	
     }
-    
-    
+	public Date getBookingDate() {
+		return date;
+	}
+	public int getNumTicketsInOrder() {
+		return numTickets;
+	}
+	public String getPromoCode() {
+		return promoCode;
+	}
+	public float getSubtotal() {
+		return subTotal;
+	}
+	public float getTax() {
+		return tax;
+	}
+    public int getBookingId() {
+    	return bookingId;
+    }
 }

@@ -86,6 +86,10 @@ public class Movie{
 	public void setMPAARating(String mpaaRating){
 		this.mpaaRating = mpaaRating;
 	}
+
+	public int getMovieId() {
+		return movieId;
+	}
 	
 	
 	

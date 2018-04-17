@@ -5,6 +5,7 @@ import java.security.NoSuchProviderException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 import com.BGAnimation.objectLayer.*;
@@ -115,7 +116,7 @@ public class BGAnimationPersistImpl {
 		if (rs.next()) {
 			if (rs.getInt("activationCode") == providedCode) {
 				query = "UPDATE user SET isActivated = 1 WHERE user.userId = '" + 
-			u.getUserID() +";"; // this should set isActivated to true
+						u.getUserID() +";";
 				DBAccessInterface.create(query);
 				return true;
 			} else {
@@ -184,21 +185,22 @@ public class BGAnimationPersistImpl {
 		return admins;
 	}
 		
+	// @Stephen
 	public static ArrayList<User> getAlluserWithoutAdmins() throws SQLException {
 		String query = "SELECT userId, firstName, lastName, email, address, "+
 		"avatarUrl, isBanned, isAdmin FROM user WHERE isAdmin = 0;";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		ArrayList<User> users = new ArrayList<User>();
 		
-	/*	while(rs.next()) {
-			int userId = rs.getInt("userId");
-			users.add(new User(userId, rs.getString("firstName"),
-				rs.getString("lastName"), rs.getString("email"), 
-				rs.getString("address"), rs.getString("avatarUrl"),
-				rs.getBoolean("isBanned"), getAllBookingOrdersWithUser(userId),
-				getAllCreditCardsWithUser(userId));
-		}
-	*/	
+		while(rs.next()) {
+			users.add(new User(rs.getInt("userId"),
+						rs.getString("firstName"),
+						rs.getString("lastName"), 
+						rs.getString("email"), 
+						rs.getString("address"),
+						rs.getInt("isBanned"),
+						rs.getInt("isAdmin")));
+		}	
 		return users;
 	}
 	
@@ -216,21 +218,27 @@ public class BGAnimationPersistImpl {
 	
 	/** Get data from creditcard table **/
 	
-	public static ArrayList<Card> getAllCardForUser(User u) throws SQLException {
+	// @Stephen
+	public static ArrayList<Card> getAllCreditCardsWithUser(User u) throws SQLException {
 		String query = "SELECT creditcard, type, expirationDate, " +
 		"billingAddress, securityCode, user_userId FROM user JOIN creditcard " +
 		"ON user.userId = creditcard.user_userId WHERE userId = " +u.getUserID() + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);	
 		ArrayList<Card> cards = new ArrayList<Card>();
 		
-	/*	while(rs.next()) {
+		while(rs.next()) {
 			cards.add(new Card(rs.getString("creditcard"), rs.getString("type"),
 				rs.getDate("expirationDate"), rs.getString("billingAddress"),
-				rs.getInt("securityCode"), rs.getInt("user_userId")));
-		}
-	*/	
+				rs.getInt("securityCode")));
+		}	
 		return cards;
 	}
+	
+	public static ArrayList<Card> getAllCreditCardsWithUser(int userId) 
+			throws SQLException {
+			User u = new User(userId);
+			return getAllCreditCardsWithUser(u);
+		}
 
 	public static void addCard(User u, Card c) throws SQLException {
 		String query = "INSERT INTO creditcard " + 
@@ -248,7 +256,7 @@ public class BGAnimationPersistImpl {
 		
 		DBAccessInterface.delete(query);
 	}
-/*	
+
 	public static ArrayList<BookingOrder> getAllBookingOrdersWithUser(int userId) 
 		throws SQLException {
 		String query = "SELECT bookingId, date, numTickets, promoCode, subtotal, " +
@@ -266,25 +274,7 @@ public class BGAnimationPersistImpl {
 		
 		return bo;
 	}
-	
-	public static ArrayList<Card> getAllCreditCardsWithUser(int userId) 
-		throws SQLException {
-		String query = "SELECT creditcard, type, expirationDate, billingAddress, " +
-		"securityCode, user_userId WHERE user_userId = " + userId + ";";
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		ArrayList<Card> c = new ArrayList<Card>();
-		
-		while(rs.next()) {
-			c.add(new Card(rs.getString("creditcard"), rs.getString("type"),
-				rs.getString("expirationDate"), rs.getString("billingAddress"),
-				rs.getInt("securityCode")));
-		}
-		
-		return c;
-	}
-
-	
-	
+	// @Stephen
 	public static BookingOrder getBookingOrder(int bookingId) 
 		throws SQLException, RuntimeException {
 		
@@ -295,10 +285,9 @@ public class BGAnimationPersistImpl {
 		
 		if (rs.next()) {
 			return new BookingOrder(bookingId, rs.getDate("date"),
-				rs.getInt("numTickets"), rs.getFloat("subtotal"),
-				rs.getFloat("tax"),	rs.getFloat("total"), 
-				rs.getString("creditcard"), rs.getInt("users_userId"), 
-				rs.getString("promoCodes_code"));
+				rs.getInt("numTickets"), rs.getString("promoCodes_code"),
+				rs.getFloat("subtotal"), rs.getFloat("tax"),rs.getFloat("total"), 
+				rs.getString("creditcard"), rs.getInt("users_userId"));
 		} else {
 			throw new RuntimeException(DB_ERR_MSG);
 		}
@@ -309,8 +298,8 @@ public class BGAnimationPersistImpl {
 		"(date, numTickets, promoCode, subtotal, tax, total, creditcard, userId)" +
 		" VALUES ('" + b.getBookingDate() + "', '" + b.getNumTicketsInOrder() 
 		+ "', '" + b.getPromoCode() + "', '" + b.getSubtotal() + "', '" + 
-		b.getTax() + "', '" + b.getTotal() + "', '" + c.getCreditCardNum() 
-		+ "', '" + u.getUserId() + "');";
+		b.getTax() + "', '" + b.getSubtotal() + "', '" + c.getCreditCard() 
+		+ "', '" + u.getUserID() + "');";
 		
 		DBAccessInterface.create(query);
 	}
@@ -324,41 +313,41 @@ public class BGAnimationPersistImpl {
 	public static void updateBookingOrder(User u, Card c, BookingOrder b) 
 		throws SQLException {
 		String query = "UPDATE bookingOrder "+
-			"SET date = '"+b.getDate()+"', "+
+			"SET date = '"+b.getBookingDate()+"', "+
 				"numTickets = '"+b.getNumTicketsInOrder()+"', "+
 				"promoCode = '"+b.getPromoCode()+"', "+
 				"subtoatl = '"+b.getSubtotal()+"', "+
 				"tax = '"+b.getTax()+"', "+
-				"total = '"+b.getTotal()+"', "+
-				"creditcard = '"+c.getCreditCardNum+"', "+
-				"userId = '" + u.getUserId()+
+				"total = '"+b.getSubtotal()+"', "+
+				"creditcard = '"+c.getCreditCard()+"', "+
+				"userId = '" + u.getUserID()+
 				"' WHERE bookingId = '"+ b.getBookingId()+";";
 				
 		DBAccessInterface.create(query);
 	}
-	
-	
-	
+	/*
+	// @Stephen
+	// Why is updateMovie looking for a booking ID?
 	public static void updateMovie(Movie m) throws SQLException {
 		String query = "UPDATE movie "+
-			"SET title = '"+m.getMovieTitle()+"', "+
-				"director = '"+m.get+"', "+
-				"cast = '"+b.getPromoCode()+"', "+
-				"genre = '"+b.getSubtotal()+"', "+
-				"description = '"+b.getTax()+"', "+
-				"bannerUrl = '"+b.getTotal()+"', "+
-				"ratings = '" + u.getUserId()+
+			"SET title = '"+m.getTitle()+"', "+
+				"director = '"+m.getDirector() +"', "+
+				"cast = '"+m.getCast()+"', "+
+				"genre = '"+m.getGenre()+"', "+
+				"description = '"+m.getDescription()+"', "+
+				"bannerUrl = '"+m.getbannerURL()+"', "+
+				"ratings = '" + m.getRatings()+
 				"' WHERE bookingId = '"+ b.getBookingId()+";";
 				
 		DBAccessInterface.create(query);
-	}
+	} */
 	
 	public static void addNewMovie(Movie m) throws SQLException {
 		String query = "INSERT INTO movie " + 
 		"(title, director, cast, genre, description, bannerUrl, ratings)" +
 		" VALUES ('" + m.getTitle() + "', '" + m.getDirector() + 
 		"', '" + m.getCast() + "', '" + m.getGenre() + "', '" + 
-		m.getDescription() + "', '" + m.getbannerUrl() + "', '" + 
+		m.getDescription() + "', '" + m.getbannerURL() + "', '" + 
 		m.getRatings() + "');";
 		
 		DBAccessInterface.create(query);
@@ -375,12 +364,12 @@ public class BGAnimationPersistImpl {
 		throws SQLException, RuntimeException {
 		String query = "SELECT movieId, title, director, cast, genre, " +
 		"description, bannerUrl, userRatings, mpaaRating FROM movie " +
-		"WHERE movie.movieId = " movieId + ";";
+		"WHERE movie.movieId = " + movieId + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		
 		if (rs.next()) {
 			return new Movie(movieId, rs.getString("title"),
-				rs.getString("director"), rs.getSeat("cast"),
+				rs.getString("director"), rs.getString("cast"),
 				rs.getString("genre"), rs.getString("description"),
 				rs.getString("bannerUrl"), rs.getFloat("userRatings"),
 				rs.getString("mpaaRating"));
@@ -411,12 +400,12 @@ public class BGAnimationPersistImpl {
 	
 	public static void updateTicket(Ticket t) throws SQLException {
 		String query = "UPDATE ticket "+
-			"SET showtime = '"+t.getShowtime()+"', "+
-				"seat = '"+t.getSeat()+"', "+
+			"SET showtime = '"+t.getShowTime()+"', "+
+				"seat = '"+t.getSeatLocation()+"', "+
 				"ticketType = '"+t.getTicketType()+"', "+
 				"purchasePrice = '"+t.getPurchasePrice()+"', "+
-				"bookingOrder_bookingId = '"+t.getBookingOrder_bookingId()+"', "+
-				"movie_movieId = '"+ t.getMovie_movieId()+
+				"bookingOrder_bookingId = '"+t.getBookingOrderId()+"', "+
+				"movie_movieId = '"+ t.getMovieId()+
 				"' WHERE ticketId = '"+ t.getTicketId()+";";
 				
 		DBAccessInterface.create(query);
@@ -426,9 +415,9 @@ public class BGAnimationPersistImpl {
 		String query = "INSERT INTO ticket " + 
 		"(showtime, seat, ticketType, purchasePrice, bookingOrder_bookingId, " +
 		"movie_movieId)" +
-		" VALUES ('" + t.getShowtime() + "', '" + t.getSeat() + "', '" + 
+		" VALUES ('" + t.getShowTime() + "', '" + t.getSeatLocation() + "', '" + 
 		t.getTicketType() + "', '" + t.getPurchasePrice() + "', '" + 
-		t.getBookingOrder_bookingId() + "', '" + t.movie_movieId() + "');";
+		t.getBookingOrderId() + "', '" + t.getMovieId() + "');";
 		
 		DBAccessInterface.create(query);
 	}
@@ -439,9 +428,7 @@ public class BGAnimationPersistImpl {
 		
 		DBAccessInterface.delete(query);
 	}
-	
-	
-	
+	/*
 	public static ArrayList<Showtime> getShowtimesForMovie(int movieId) 
 		throws SQLException, RuntimeException {
 			
@@ -626,6 +613,5 @@ public class BGAnimationPersistImpl {
 		"seat.seatId = " + s.getSeatId()+ ";";
 		
 		DBAccessInterface.delete(query);
-	}
-*/
+	} */
 }
