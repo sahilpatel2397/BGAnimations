@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!--  This site was created in Webflow. http://www.webflow.com  -->
-<!--  Last Published: Thu Apr 12 2018 16:25:09 GMT+0000 (UTC)  -->
-<html data-wf-page="5aca6873e4871dde366594ba" data-wf-site="5aa6bf1441b9c7b66ebd3a3b">
+<!--  Last Published: Tue Apr 17 2018 18:35:59 GMT+0000 (UTC)  -->
+<html data-wf-page="5ad63c79e4049245e8f0e51d" data-wf-site="5aa6bf1441b9c7b66ebd3a3b">
 <head>
   <meta charset="utf-8">
-  <title>LoginPage</title>
-  <meta content="LoginPage" property="og:title">
+  <title>activatIonEntrance</title>
+  <meta content="activatIonEntrance" property="og:title">
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <meta content="Webflow" name="generator">
   <link href="css/normalize.css" rel="stylesheet" type="text/css">
@@ -21,8 +21,7 @@
 <body class="body-2">
   <div class="container-7 w-container">
     <div class="w-form">
-      <form id="email-form-2" name="email-form-2" data-name="Email Form 2" action="Servlet" method="get" class="form-2"><label for="userName">Username</label><input type="text" class="w-input" maxlength="256" name="userName" data-name="userName" placeholder="Enter your username" id="userName"><label for="password">Password</label><input type="password" class="w-input" maxlength="256" name="password" data-name="password" placeholder="Enter your password" id="password"><input type="submit" name="submit" value="Login" data-wait="Please wait..." class="submit-button-4 w-button"><input type="submit" name ="submit" value="Forget Password?" data-wait="Please wait..." class="submit-button-8 w-button"></form>
-      
+      <form id="email-form-2" name="email-form-2" data-name="Email Form 2" action="Servlet" method="get" class="form-2"><label for="password">Enter Activation Code:</label><input type="text" class="w-input" maxlength="256" name="code" data-name="password" placeholder="Enter Activation Code" id="password" required=""><input type="submit" name="submit" value="Activate" data-wait="Please wait..." class="submit-button-4 w-button"></form>
       <div class="w-form-done">
         <div>Thank you! Your submission has been received!</div>
       </div>
@@ -31,7 +30,7 @@
       </div>
     </div>
   </div>
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript" intergrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script src="js/webflow.js" type="text/javascript"></script>
   <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
 </body>
