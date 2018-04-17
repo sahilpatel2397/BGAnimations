@@ -16,7 +16,7 @@ public class DatabaseAccess
     static final String DRIVE_NAME = "com.mysql.jdbc.Driver";
     static final String CONNECTION_URL = "jdbc:mysql://localhost:3306/bganimation";
     static final String DB_CONNECTION_USERNAME = "root";
-    static final String DB_CONNECTION_PASSWORD = "Supersaiyan5";
+    static final String DB_CONNECTION_PASSWORD = "root";
 
     public static Connection connect()
     {
