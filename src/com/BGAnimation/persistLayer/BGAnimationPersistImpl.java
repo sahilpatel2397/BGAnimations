@@ -5,7 +5,6 @@ import java.security.NoSuchProviderException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Random;
 
 import com.BGAnimation.objectLayer.*;
@@ -189,7 +188,6 @@ public class BGAnimationPersistImpl {
 		return admins;
 	}
 		
-	// @Stephen
 	public static ArrayList<User> getAlluserWithoutAdmins() throws SQLException {
 		String query = "SELECT userId, firstName, lastName, email, address, "+
 		"avatarUrl, isBanned, isAdmin FROM user WHERE isAdmin = 0;";
@@ -222,7 +220,6 @@ public class BGAnimationPersistImpl {
 	
 	/** Get data from creditcard table **/
 	
-	// @Stephen
 	public static ArrayList<Card> getAllCreditCardsWithUser(User u) throws SQLException {
 		String query = "SELECT creditcard, type, expirationDate, " +
 		"billingAddress, securityCode, user_userId FROM user JOIN creditcard " +
@@ -279,9 +276,9 @@ public class BGAnimationPersistImpl {
 		return bo;
 	}
 	
-	// @Stephen
 	public static ArrayList<BookingOrder> getAllBookingOrders() throws SQLException {
-		String query = ""; 
+		String query = "SELECT bookingId, date, numTickets, promoCode, subtotal, " + 
+				"tax, total, creditcard, user_userId;";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		ArrayList<BookingOrder> orders = new ArrayList<BookingOrder>();
 		
@@ -296,7 +293,6 @@ public class BGAnimationPersistImpl {
 		return orders;
 	}
 	
-	// @Stephen
 	public static BookingOrder getBookingOrder(int bookingId) 
 		throws SQLException, RuntimeException {
 		
@@ -347,9 +343,7 @@ public class BGAnimationPersistImpl {
 				
 		DBAccessInterface.create(query);
 	}
-	/*
-	// @Stephen
-	// Why is updateMovie looking for a booking ID?
+
 	public static void updateMovie(Movie m) throws SQLException {
 		String query = "UPDATE movie "+
 			"SET title = '"+m.getTitle()+"', "+
@@ -359,10 +353,10 @@ public class BGAnimationPersistImpl {
 				"description = '"+m.getDescription()+"', "+
 				"bannerUrl = '"+m.getbannerURL()+"', "+
 				"ratings = '" + m.getRatings()+
-				"' WHERE bookingId = '"+ b.getBookingId()+";";
+				"' WHERE movieId = "+ m.getMovieId()+";";
 				
 		DBAccessInterface.create(query);
-	} */
+	}
 	
 	public static void addNewMovie(Movie m) throws SQLException {
 		String query = "INSERT INTO movie " + 
@@ -400,9 +394,8 @@ public class BGAnimationPersistImpl {
 		}
 	}
 	
-	// @Stephen
 	public static ArrayList<Movie> getAllMovies() throws SQLException {
-		String query = ""; // for this query, give me all the movie IDs
+		String query = "SELECT movieId FROM movie WHERE TRUE;"; // for this query, give me all the movie IDs
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		ArrayList<Movie> movies = new ArrayList<Movie>();
 		
@@ -431,9 +424,8 @@ public class BGAnimationPersistImpl {
 		}
 	}
 	
-	// @Stephen
 	public static ArrayList<Ticket> getAllTickets() throws SQLException {
-		String query = ""; // just return all the ticket IDs
+		String query = "SELECT ticketId FROM ticket WHERE TRUE;"; // just return all the ticket IDs
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		ArrayList<Ticket> tickets = new ArrayList<Ticket>();
 		
@@ -589,9 +581,8 @@ public class BGAnimationPersistImpl {
 		}
 	}
 	
-	// @Stephen
 	public static ArrayList<Hall> getAllHalls() throws SQLException {
-		String query = ""; // return all the hallIds
+		String query = "SELECT hallId FROM hall WHERE TRUE;"; // return all the hallIds
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		ArrayList<Hall> halls = new ArrayList<Hall>();
 		
@@ -669,22 +660,23 @@ public class BGAnimationPersistImpl {
 	
 	/* Get all data from promocodes table */
 	
-	// @Stephen
 	public static void addNewPromotion(Promotion p) throws SQLException {
-		String query = "";
+		String query = "INSERT INTO promocodes (code, percentOff) VALUES('"+
+				p.getPromocode() + "', " + p.getPercentOff() +");";
 		DBAccessInterface.create(query);
 	}
 	
-	// @Stephen
 	public static void updatePromotion(Promotion p) throws SQLException {
-		String query = "";
+		String query = "UPDATE promocodes SET code = " + p.getPromocode() + 
+				", percentOff = " + p.getPercentOff() + " WHERE " +
+				"promocodes.code = '" + p.getPromocode() + "';";
 		DBAccessInterface.create(query);
 	}
 	
-	// @Stephen
 	public static Promotion getPromotion(String promocode) 
 			throws SQLException, RuntimeException {
-		String query = "";
+		String query = "SELECT code, percentOff FROM promocodes WHERE "+
+			"promocodes.code = '" + promocode + "';";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		
 		if (rs.next()) {
@@ -694,9 +686,8 @@ public class BGAnimationPersistImpl {
 		}
 	}
 	
-	// @Stephen
 	public static ArrayList<Promotion> getAllPromotions() throws SQLException {
-		String query = "";
+		String query = "SELECT code, percentOff FROM promocodes WHERE TRUE;";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		ArrayList<Promotion> promos = new ArrayList<Promotion>();
 		
