@@ -5,6 +5,7 @@ import java.security.NoSuchProviderException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 import com.BGAnimation.objectLayer.*;
@@ -278,8 +279,29 @@ public class BGAnimationPersistImpl {
 		return bo;
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
+=======
+	
+	// @Stephen
+	public static ArrayList<BookingOrder> getAllBookingOrders() throws SQLException {
+		String query = ""; 
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		ArrayList<BookingOrder> orders = new ArrayList<BookingOrder>();
+		
+		while(rs.next()) {
+			orders.add(new BookingOrder(rs.getInt("bookingId"), rs.getDate("date"),
+					rs.getInt("numTickets"), rs.getString("promoCode"),
+					rs.getFloat("subtotal"), rs.getFloat("tax"), 
+					rs.getFloat("total"), rs.getString("creditcard"),
+					rs.getInt("user_userId")));
+		}
+		
+		return orders;
+	}
+	
+>>>>>>> parent of 87cc29f... mY COmiMTS
 	// @Stephen
 =======
 >>>>>>> master
@@ -414,6 +436,7 @@ public class BGAnimationPersistImpl {
 	
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -421,6 +444,9 @@ public class BGAnimationPersistImpl {
 =======
 	// @Stephen
 >>>>>>> parent of aaeac41... updated SQL in Persist
+=======
+	// @Stephen
+>>>>>>> parent of 87cc29f... mY COmiMTS
 	public static ArrayList<Movie> getAllMovies() throws SQLException {
 		String query = ""; // for this query, give me all the movie IDs
 		ResultSet rs = DBAccessInterface.retrieve(query);
@@ -433,7 +459,10 @@ public class BGAnimationPersistImpl {
 		return movies;
 	}
 	
+<<<<<<< HEAD
 >>>>>>> master
+=======
+>>>>>>> parent of 87cc29f... mY COmiMTS
 	public static Ticket getTicket(int ticketId) 
 		throws SQLException, RuntimeException {
 		
@@ -454,6 +483,7 @@ public class BGAnimationPersistImpl {
 	
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -461,6 +491,9 @@ public class BGAnimationPersistImpl {
 =======
 	// @Stephen
 >>>>>>> parent of aaeac41... updated SQL in Persist
+=======
+	// @Stephen
+>>>>>>> parent of 87cc29f... mY COmiMTS
 	public static ArrayList<Ticket> getAllTickets() throws SQLException {
 		String query = ""; // just return all the ticket IDs
 		ResultSet rs = DBAccessInterface.retrieve(query);
@@ -473,7 +506,10 @@ public class BGAnimationPersistImpl {
 		return tickets;
 	}
 	
+<<<<<<< HEAD
 >>>>>>> master
+=======
+>>>>>>> parent of 87cc29f... mY COmiMTS
 	public static void updateTicket(Ticket t) throws SQLException {
 		String query = "UPDATE ticket "+
 			"SET showtime = '"+t.getShowTime()+"', "+
@@ -504,7 +540,7 @@ public class BGAnimationPersistImpl {
 		
 		DBAccessInterface.delete(query);
 	}
-	/*
+
 	public static ArrayList<Showtime> getShowtimesForMovie(int movieId) 
 		throws SQLException, RuntimeException {
 			
@@ -529,7 +565,7 @@ public class BGAnimationPersistImpl {
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		
 		if (rs.next()) {
-			return new Showtime(showtimeId, rs.getInt("hallId"),
+			return new Showtime(rs.getInt("hallId"),
 				rs.getDate("time"), rs.getInt("numSeats"),
 				rs.getInt("movie_movieId"));
 		} else {
@@ -542,7 +578,7 @@ public class BGAnimationPersistImpl {
 			"SET hallId = '"+s.getHallId()+"', "+
 				"time = '"+s.getTime()+"', "+
 				"numSeats = '"+s.getNumSeats()+"', "+
-				"movie_movieId = '"+ s.getMovie_movieId()+
+				"movie_movieId = '"+ s.getMovieId()+
 				"' WHERE showId = '"+ s.getShowId()+";";
 				
 		DBAccessInterface.create(query);
@@ -552,7 +588,7 @@ public class BGAnimationPersistImpl {
 		String query = "INSERT INTO showtime " + 
 		"(hallId, time, numSeats, movie_movieId) " +
 		" VALUES ('" + s.getHallId() + "', '" + s.getTime() + "', '" + 
-		s.getNumSeats() + "', '" + s.getMovieId_movieId() + "');";
+		s.getNumSeats() + "', '" + s.getMovieId() + "');";
 		
 		DBAccessInterface.create(query);
 	}
@@ -563,18 +599,15 @@ public class BGAnimationPersistImpl {
 		
 		DBAccessInterface.delete(query);
 	}
-	
-	
-	
 	public static ArrayList<MovieReview> getReviewsForMovie(Movie m) throws SQLException {
 		String query = "SELECT reviewId, userId, review, movie_movieId FROM " +
 		"movieReview WHERE movieReview.movie_movieId = " + m.getMovieId() + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
-		ArrayList<MovieReview> r = new ArrayList<Review>();
+		ArrayList<MovieReview> r = new ArrayList<MovieReview>();
 		
 		while (rs.next()) {
 			r.add(new MovieReview(rs.getInt("reviewId"), rs.getInt("userId"),
-				rs.getString("review")));
+				rs.getString("review"), rs.getInt("movie_movieId")));
 		}
 		
 		return r;
@@ -584,7 +617,7 @@ public class BGAnimationPersistImpl {
 		String query = "UPDATE movieReview "+
 			"SET userId = '"+r.getUserId()+"', "+
 				"review = '"+r.getReview()+"', "+
-				"movie_movieId = '"+ s.getMovie_movieId()+
+				"movie_movieId = '"+ r.getMovieId()+
 				"' WHERE reviewId = '"+ r.getReviewId()+";";
 				
 		DBAccessInterface.create(query);
@@ -594,19 +627,17 @@ public class BGAnimationPersistImpl {
 		String query = "INSERT INTO movieReview " + 
 		"(userId, review, movie_movieId) " +
 		" VALUES ('" + r.getUserId() + "', '" + r.getReview() + "', '" + 
-		r.getMovie_movieId() + "');";
+		r.getMovieId() + "');";
 		
 		DBAccessInterface.create(query);
 	}
 	
-	public static void deleteReview(Review r) throws SQLException {
+	public static void deleteReview(MovieReview r) throws SQLException {
 		String query = "DELETE FROM movieReview WHERE " +
 		"movieReview.reviewId = " + r.getReviewId()+ ";";
 		
 		DBAccessInterface.delete(query);
 	}
-	
-	
 	
 	public static Hall getHall(int hallId) 
 		throws SQLException, RuntimeException {
@@ -626,6 +657,7 @@ public class BGAnimationPersistImpl {
 	
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -633,6 +665,9 @@ public class BGAnimationPersistImpl {
 =======
 	// @Stephen
 >>>>>>> parent of aaeac41... updated SQL in Persist
+=======
+	// @Stephen
+>>>>>>> parent of 87cc29f... mY COmiMTS
 	public static ArrayList<Hall> getAllHalls() throws SQLException {
 		String query = ""; // return all the hallIds
 		ResultSet rs = DBAccessInterface.retrieve(query);
@@ -645,13 +680,16 @@ public class BGAnimationPersistImpl {
 		 return halls;
 	}
 	
+<<<<<<< HEAD
 >>>>>>> master
+=======
+>>>>>>> parent of 87cc29f... mY COmiMTS
 	public static void updateHall(Hall h) throws SQLException {
 		String query = "UPDATE hall "+
 			"SET totalSeats = '"+h.getTotalSeats()+"', "+
-				"showtimes = '"+h.getShowtimes()+"', "+
+				"showtimes = '"+h.getShowtime()+"', "+
 				"numSeatsRemaining = '"+ h.getNumSeatsRemaining()+
-				"' WHERE hallId = '"+ h.hallId()+";";
+				"' WHERE hallId = '"+ h.getHallId()+";";
 				
 		DBAccessInterface.create(query);
 	}
@@ -659,7 +697,7 @@ public class BGAnimationPersistImpl {
 	public static void createNewHall(Hall h) throws SQLException {
 		String query = "INSERT INTO hall " + 
 		"(totalSeats, showtimes, numSeatsRemaining, showtime_showId) " +
-		" VALUES ('" + h.getTotalSeats() + "', '" + h.getShowtimes() + "', '" + 
+		" VALUES ('" + h.getTotalSeats() + "', '" + h.getShowtime() + "', '" + 
 		h.getNumSeatsRemaining() + "');";
 		
 		DBAccessInterface.create(query);
@@ -667,12 +705,10 @@ public class BGAnimationPersistImpl {
 	
 	public static void deleteHall(Hall h) throws SQLException {
 		String query = "DELETE FROM hall WHERE " +
-		"hall.hallId = " + h.hallId()+ ";";
+		"hall.hallId = " + h.getHallId()+ ";";
 		
 		DBAccessInterface.delete(query);
 	}
-	
-	
 	
 	public static Seat getSeat(int seatId) throws SQLException, RuntimeException {
 		String query = "SELECT isReserved, showId, hall_hallId FROM seat " +
@@ -689,7 +725,7 @@ public class BGAnimationPersistImpl {
 	
 	public static void updateSeat(Seat s) throws SQLException {
 		String query = "UPDATE hall "+
-			"SET isReserved = '"+s.getIsReserved()+"', "+
+			"SET isReserved = '"+s.getSeatReservation()+"', "+
 				"showId = '"+s.getShowId()+"', "+
 				"hall_hallId = '"+ s.getHallId()+
 				"' WHERE seatId = '"+ s.getSeatId()+";";
@@ -700,8 +736,8 @@ public class BGAnimationPersistImpl {
 	public static void createNewSeat(Seat s) throws SQLException {
 		String query = "INSERT INTO seat " + 
 		"(isReserved, showId, hall_hallId) " +
-		" VALUES ('" + s.getIsReserved() + "', '" + s.getShowId() + "', '" + 
-		s.getHall_hallId() + "');";
+		" VALUES ('" + s.getSeatReservation() + "', '" + s.getShowId() + "', '" + 
+		s.getHallId() + "');";
 		
 		DBAccessInterface.create(query);
 	}
@@ -712,8 +748,11 @@ public class BGAnimationPersistImpl {
 		
 		DBAccessInterface.delete(query);
 <<<<<<< HEAD
+<<<<<<< HEAD
 	} */
 =======
+=======
+>>>>>>> parent of 87cc29f... mY COmiMTS
 	} 
 	
 	/* Get all data from promocodes table */
@@ -755,5 +794,8 @@ public class BGAnimationPersistImpl {
 		
 		return promos;
 	}
+<<<<<<< HEAD
 >>>>>>> master
+=======
+>>>>>>> parent of 87cc29f... mY COmiMTS
 }
