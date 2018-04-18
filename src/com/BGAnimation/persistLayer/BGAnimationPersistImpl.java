@@ -5,7 +5,6 @@ import java.security.NoSuchProviderException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Random;
 
 import com.BGAnimation.objectLayer.*;
@@ -357,7 +356,7 @@ public class BGAnimationPersistImpl {
 				"' WHERE movieId = "+ m.getMovieId()+";";
 				
 		DBAccessInterface.create(query);
-	} */
+	}
 	
 	public static void addNewMovie(Movie m) throws SQLException {
 		String query = "INSERT INTO movie " + 
