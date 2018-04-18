@@ -26,24 +26,43 @@ public class BookingOrder{
     	this.total = total;
     	this.creditCard = creditcard;
     	this.userId = userId;
-    	
     }
+    
 	public Date getBookingDate() {
 		return date;
 	}
+	
 	public int getNumTicketsInOrder() {
 		return numTickets;
 	}
+	
 	public String getPromoCode() {
 		return promoCode;
 	}
+	
 	public float getSubtotal() {
 		return subTotal;
 	}
+	
 	public float getTax() {
 		return tax;
 	}
+	
+	public float getTotal() {
+		return total;
+	}
+	
     public int getBookingId() {
     	return bookingId;
     }
+    
+    public String getCreditCard() {
+    	return creditCard;
+    }
+    
+    public int getUserId() {
+    	return userId;
+    }
+    
+    
 }
