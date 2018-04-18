@@ -278,11 +278,6 @@ public class BGAnimationPersistImpl {
 		
 		return bo;
 	}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
 	
 	// @Stephen
 	public static ArrayList<BookingOrder> getAllBookingOrders() throws SQLException {
@@ -301,36 +296,7 @@ public class BGAnimationPersistImpl {
 		return orders;
 	}
 	
->>>>>>> parent of 87cc29f... mY COmiMTS
 	// @Stephen
-=======
->>>>>>> master
-	
-	// @Stephen
-	public static ArrayList<BookingOrder> getAllBookingOrders() throws SQLException {
-		String query = ""; 
-		ResultSet rs = DBAccessInterface.retrieve(query);
-		ArrayList<BookingOrder> orders = new ArrayList<BookingOrder>();
-		
-		while(rs.next()) {
-			orders.add(new BookingOrder(rs.getInt("bookingId"), rs.getDate("date"),
-					rs.getInt("numTickets"), rs.getString("promoCode"),
-					rs.getFloat("subtotal"), rs.getFloat("tax"), 
-					rs.getFloat("total"), rs.getString("creditcard"),
-					rs.getInt("user_userId")));
-		}
-		
-		return orders;
-	}
-	
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> master
->>>>>>> master
-=======
-	// @Stephen
->>>>>>> parent of aaeac41... updated SQL in Persist
 	public static BookingOrder getBookingOrder(int bookingId) 
 		throws SQLException, RuntimeException {
 		
@@ -434,19 +400,7 @@ public class BGAnimationPersistImpl {
 		}
 	}
 	
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> master
-=======
 	// @Stephen
->>>>>>> parent of aaeac41... updated SQL in Persist
-=======
-	// @Stephen
->>>>>>> parent of 87cc29f... mY COmiMTS
 	public static ArrayList<Movie> getAllMovies() throws SQLException {
 		String query = ""; // for this query, give me all the movie IDs
 		ResultSet rs = DBAccessInterface.retrieve(query);
@@ -459,10 +413,6 @@ public class BGAnimationPersistImpl {
 		return movies;
 	}
 	
-<<<<<<< HEAD
->>>>>>> master
-=======
->>>>>>> parent of 87cc29f... mY COmiMTS
 	public static Ticket getTicket(int ticketId) 
 		throws SQLException, RuntimeException {
 		
@@ -481,19 +431,7 @@ public class BGAnimationPersistImpl {
 		}
 	}
 	
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> master
-=======
 	// @Stephen
->>>>>>> parent of aaeac41... updated SQL in Persist
-=======
-	// @Stephen
->>>>>>> parent of 87cc29f... mY COmiMTS
 	public static ArrayList<Ticket> getAllTickets() throws SQLException {
 		String query = ""; // just return all the ticket IDs
 		ResultSet rs = DBAccessInterface.retrieve(query);
@@ -506,10 +444,6 @@ public class BGAnimationPersistImpl {
 		return tickets;
 	}
 	
-<<<<<<< HEAD
->>>>>>> master
-=======
->>>>>>> parent of 87cc29f... mY COmiMTS
 	public static void updateTicket(Ticket t) throws SQLException {
 		String query = "UPDATE ticket "+
 			"SET showtime = '"+t.getShowTime()+"', "+
@@ -655,19 +589,7 @@ public class BGAnimationPersistImpl {
 		}
 	}
 	
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> master
-=======
 	// @Stephen
->>>>>>> parent of aaeac41... updated SQL in Persist
-=======
-	// @Stephen
->>>>>>> parent of 87cc29f... mY COmiMTS
 	public static ArrayList<Hall> getAllHalls() throws SQLException {
 		String query = ""; // return all the hallIds
 		ResultSet rs = DBAccessInterface.retrieve(query);
@@ -680,10 +602,6 @@ public class BGAnimationPersistImpl {
 		 return halls;
 	}
 	
-<<<<<<< HEAD
->>>>>>> master
-=======
->>>>>>> parent of 87cc29f... mY COmiMTS
 	public static void updateHall(Hall h) throws SQLException {
 		String query = "UPDATE hall "+
 			"SET totalSeats = '"+h.getTotalSeats()+"', "+
@@ -747,12 +665,6 @@ public class BGAnimationPersistImpl {
 		"seat.seatId = " + s.getSeatId()+ ";";
 		
 		DBAccessInterface.delete(query);
-<<<<<<< HEAD
-<<<<<<< HEAD
-	} */
-=======
-=======
->>>>>>> parent of 87cc29f... mY COmiMTS
 	} 
 	
 	/* Get all data from promocodes table */
@@ -794,8 +706,4 @@ public class BGAnimationPersistImpl {
 		
 		return promos;
 	}
-<<<<<<< HEAD
->>>>>>> master
-=======
->>>>>>> parent of 87cc29f... mY COmiMTS
 }
