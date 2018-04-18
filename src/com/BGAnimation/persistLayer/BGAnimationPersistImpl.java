@@ -278,6 +278,24 @@ public class BGAnimationPersistImpl {
 		
 		return bo;
 	}
+	
+	// @Stephen
+	public static ArrayList<BookingOrder> getAllBookingOrders() throws SQLException {
+		String query = ""; 
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		ArrayList<BookingOrder> orders = new ArrayList<BookingOrder>();
+		
+		while(rs.next()) {
+			orders.add(new BookingOrder(rs.getInt("bookingId"), rs.getDate("date"),
+					rs.getInt("numTickets"), rs.getString("promoCode"),
+					rs.getFloat("subtotal"), rs.getFloat("tax"), 
+					rs.getFloat("total"), rs.getString("creditcard"),
+					rs.getInt("user_userId")));
+		}
+		
+		return orders;
+	}
+	
 	// @Stephen
 	public static BookingOrder getBookingOrder(int bookingId) 
 		throws SQLException, RuntimeException {
@@ -382,6 +400,19 @@ public class BGAnimationPersistImpl {
 		}
 	}
 	
+	// @Stephen
+	public static ArrayList<Movie> getAllMovies() throws SQLException {
+		String query = ""; // for this query, give me all the movie IDs
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		ArrayList<Movie> movies = new ArrayList<Movie>();
+		
+		while(rs.next()) {
+			movies.add(getMovie(rs.getInt("movieId")));
+		}
+		
+		return movies;
+	}
+	
 	public static Ticket getTicket(int ticketId) 
 		throws SQLException, RuntimeException {
 		
@@ -398,6 +429,19 @@ public class BGAnimationPersistImpl {
 		} else {
 			throw new RuntimeException(DB_ERR_MSG);
 		}
+	}
+	
+	// @Stephen
+	public static ArrayList<Ticket> getAllTickets() throws SQLException {
+		String query = ""; // just return all the ticket IDs
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		ArrayList<Ticket> tickets = new ArrayList<Ticket>();
+		
+		while(rs.next()) {
+			tickets.add(getTicket(rs.getInt("ticketId")));
+		}
+		
+		return tickets;
 	}
 	
 	public static void updateTicket(Ticket t) throws SQLException {
@@ -545,6 +589,19 @@ public class BGAnimationPersistImpl {
 		}
 	}
 	
+	// @Stephen
+	public static ArrayList<Hall> getAllHalls() throws SQLException {
+		String query = ""; // return all the hallIds
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		ArrayList<Hall> halls = new ArrayList<Hall>();
+		
+		while(rs.next()) {
+			halls.add(getHall(rs.getInt("hallId")));
+		}
+		
+		 return halls;
+	}
+	
 	public static void updateHall(Hall h) throws SQLException {
 		String query = "UPDATE hall "+
 			"SET totalSeats = '"+h.getTotalSeats()+"', "+
@@ -570,8 +627,6 @@ public class BGAnimationPersistImpl {
 		
 		DBAccessInterface.delete(query);
 	}
-	
-	
 	
 	public static Seat getSeat(int seatId) throws SQLException, RuntimeException {
 		String query = "SELECT isReserved, showId, hall_hallId FROM seat " +
@@ -611,4 +666,44 @@ public class BGAnimationPersistImpl {
 		
 		DBAccessInterface.delete(query);
 	} 
+	
+	/* Get all data from promocodes table */
+	
+	// @Stephen
+	public static void addNewPromotion(Promotion p) throws SQLException {
+		String query = "";
+		DBAccessInterface.create(query);
+	}
+	
+	// @Stephen
+	public static void updatePromotion(Promotion p) throws SQLException {
+		String query = "";
+		DBAccessInterface.create(query);
+	}
+	
+	// @Stephen
+	public static Promotion getPromotion(String promocode) 
+			throws SQLException, RuntimeException {
+		String query = "";
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		
+		if (rs.next()) {
+			return new Promotion(rs.getString("code"), rs.getInt("percentOff"));
+		} else {
+			throw new RuntimeException(DB_ERR_MSG);
+		}
+	}
+	
+	// @Stephen
+	public static ArrayList<Promotion> getAllPromotions() throws SQLException {
+		String query = "";
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		ArrayList<Promotion> promos = new ArrayList<Promotion>();
+		
+		while(rs.next()) {
+			promos.add(new Promotion(rs.getString("code"), rs.getInt("percentOff")));
+		}
+		
+		return promos;
+	}
 }
