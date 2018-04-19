@@ -8,9 +8,9 @@
   <meta content="MainAdminPage" property="og:title">
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <meta content="Webflow" name="generator">
-  <link href="../css/normalize.css" rel="stylesheet" type="text/css">
-  <link href="../css/webflow.css" rel="stylesheet" type="text/css">
-  <link href="../css/moviewebsite-8866eb.webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/normalize.css" rel="stylesheet" type="text/css">
+  <link href="css/webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/moviewebsite-8866eb.webflow.css" rel="stylesheet" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js" type="text/javascript"></script>
   <script type="text/javascript">WebFont.load({  google: {    families: ["Roboto:regular","Roboto:100,300,regular"]  }});</script>
   <!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
@@ -21,8 +21,8 @@
 <body class="body-7">
   <div data-collapse="medium" data-animation="default" data-duration="400" class="navbar-8 w-nav">
     <div class="w-container">
-      <div class="container-8 w-container"><a href="../index.html" class="w-nav-brand"><img src="../images/bganimations.png" width="250.5" class="image-4"></a>
-        <nav role="navigation" class="w-clearfix w-nav-menu"><a href="../index.html" class="nav-link w-nav-link">Home</a><a href="../movie.html" class="nav-link w-nav-link">Movies</a><a href="../login.html" class="nav-link w-nav-link">Registration</a>
+      <div class="container-8 w-container"><a href="index.html" class="w-nav-brand"><img src="images/bganimations.png" width="250.5" class="image-4"></a>
+        <nav role="navigation" class="w-clearfix w-nav-menu"><a href="index.html" class="nav-link w-nav-link">Home</a><a href="movie.html" class="nav-link w-nav-link">Movies</a><a href="login.html" class="nav-link w-nav-link">Registration</a>
           <div class="form-block w-form">
             <form id="email-form" name="email-form" data-name="Email Form" action="http://Servlet"><input type="submit" value="My Account" data-wait="Please wait..." class="submit-button-6 w-button"></form>
             <div class="w-form-done">
@@ -49,7 +49,7 @@
           <div class="icon w-icon-dropdown-toggle"></div>
           <div class="text-block-7">Admin</div>
         </div>
-        <nav class="dropdown-list w-dropdown-list"><a href="../admin/mainadminpage.html" class="dropdown-link w-dropdown-link">Admin</a><a href="../admin/manageusers.html" class="dropdown-link w-dropdown-link">Manage Users</a><a href="../admin/viewreports.html" class="dropdown-link w-dropdown-link">View Reports</a><a href="../admin/managemovies.html" class="dropdown-link w-dropdown-link">Manager Movies</a><a href="../admin/manageshowtimes.html" class="dropdown-link w-dropdown-link">Manage Showtimes</a><a href="../admin/managehalls.html" class="dropdown-link w-dropdown-link">Manage Halls</a><a href="../admin/managepromotions.html" class="dropdown-link w-dropdown-link">Manage Promotions</a><a href="../admin/sendmassemails.html" class="dropdown-link w-dropdown-link">Send Mass Emails</a></nav>
+        <nav class="dropdown-list w-dropdown-list"><a href="admin/mainadminpage.html" class="dropdown-link w-dropdown-link">Admin</a><a href="admin/manageusers.html" class="dropdown-link w-dropdown-link">Manage Users</a><a href="admin/viewreports.html" class="dropdown-link w-dropdown-link">View Reports</a><a href="admin/managemovies.html" class="dropdown-link w-dropdown-link">Manager Movies</a><a href="admin/manageshowtimes.html" class="dropdown-link w-dropdown-link">Manage Showtimes</a><a href="admin/managehalls.html" class="dropdown-link w-dropdown-link">Manage Halls</a><a href="admin/managepromotions.html" class="dropdown-link w-dropdown-link">Manage Promotions</a><a href="admin/sendmassemails.html" class="dropdown-link w-dropdown-link">Send Mass Emails</a></nav>
       </div>
     </div>
   </div>
