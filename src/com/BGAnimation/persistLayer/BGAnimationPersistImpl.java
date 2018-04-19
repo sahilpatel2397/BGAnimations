@@ -436,9 +436,10 @@ public class BGAnimationPersistImpl {
 		return tickets;
 	}
 	
-	// @Stephen
-	public static ArrayList<Ticket> getAllTicketsInBookingOrder() throws SQLException {
-		String query = ""; // just return all the ticket IDs
+	public static ArrayList<Ticket> getAllTicketsInBookingOrder(BookingOrder b) throws SQLException {
+		String query = "SELECT ticketId FROM ticket JOIN bookingOrder " +
+				"ON bookingOrder.bookingId = ticket.bookingOrder_bookingId " +
+				"WHERE bookingOrder.bookingId = '" + b.getBookingId() + "';"; // just return all the ticket IDs
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		ArrayList<Ticket> tickets = new ArrayList<Ticket>();
 		
