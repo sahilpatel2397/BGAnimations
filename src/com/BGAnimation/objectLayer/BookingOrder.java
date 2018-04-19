@@ -1,5 +1,6 @@
 package com.BGAnimation.objectLayer;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class BookingOrder{
@@ -12,6 +13,7 @@ public class BookingOrder{
     private float total;
     private String creditCard;
     private int userId;
+    private ArrayList<Ticket> tickets; 
     
     public BookingOrder(){
         
@@ -26,6 +28,18 @@ public class BookingOrder{
     	this.total = total;
     	this.creditCard = creditcard;
     	this.userId = userId;
+    }
+    
+    public void addTicket(Ticket t) {
+    	tickets.add(t);
+    }
+    
+    public void removeTicket(Ticket t) {
+    	tickets.remove(t);
+    }
+    
+    public ArrayList<Ticket> getAllTickets() {
+    	return tickets;
     }
     
 	public Date getBookingDate() {
