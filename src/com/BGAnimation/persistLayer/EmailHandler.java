@@ -10,6 +10,10 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.BGAnimation.objectLayer.BookingOrder;
+import com.BGAnimation.objectLayer.Ticket;
+import com.BGAnimation.objectLayer.User;
+
 public class EmailHandler {
 
     final static String SYSTEM_EMAIL = "bganimation@wallou.net";
@@ -23,6 +27,17 @@ public class EmailHandler {
 				+ "Please enter code " + code + " under my profile to activate your account."
 				+ "\n\nEnjoy!\nTeam BGA";
 		sendMail(email, subject, body);
+	}
+	
+	public static void sendBookingConfirmation(User u, BookingOrder b) {
+		String subject = "BGAnimation Booking Order #" + b.getBookingId();
+		String body = "Hi " + u.getFirstName() + ",\n" 
+				+ "Thank you for your recent purchase. Here are the details for your records:\n\n";
+		for (Ticket t : b.getAllTickets()) {
+			body += t.toString();
+		}
+		body += "\n\nEnjoy your movie!\nTeam BGA";
+		sendMail(u.getEmail(), subject, body);
 	}
 
     public static void sendMail(String email, String subject, String body) {

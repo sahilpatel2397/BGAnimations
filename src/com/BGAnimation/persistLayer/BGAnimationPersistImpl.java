@@ -436,6 +436,19 @@ public class BGAnimationPersistImpl {
 		return tickets;
 	}
 	
+	// @Stephen
+	public static ArrayList<Ticket> getAllTicketsInBookingOrder() throws SQLException {
+		String query = ""; // just return all the ticket IDs
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		ArrayList<Ticket> tickets = new ArrayList<Ticket>();
+		
+		while(rs.next()) {
+			tickets.add(getTicket(rs.getInt("ticketId")));
+		}
+		
+		return tickets;
+	}
+	
 	public static void updateTicket(Ticket t) throws SQLException {
 		String query = "UPDATE ticket "+
 			"SET showtime = '"+t.getShowTime()+"', "+

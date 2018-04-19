@@ -12,6 +12,7 @@ public class Ticket {
 	private int movieId;
 	private String ticketType;
 	private float purchasePrice;
+	private String movieTitle;
 	
 	public Ticket(int ticketNum, Date showTime, int seatLocation, String ticketType, float purchasePrice, int bookingOrderId, int movieId) {
 
@@ -79,6 +80,19 @@ public class Ticket {
 
 	public void setMovieId(int movieId) {
 		this.movieId = movieId;
+	}
+	
+	@Override
+	public String toString() {
+		return movieTitle + "\t" + showTime.toString() + "\t$" + purchasePrice;
+	}
+	
+	public void setMovieTitle(String s) {
+		this.movieTitle = s;
+	}
+	
+	public String getMovieTitle() {
+		return movieTitle;
 	}
 	
 }
