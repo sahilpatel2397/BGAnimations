@@ -1103,8 +1103,9 @@
 }
 
 .section-14 {
-  margin-right: 2%;
-  margin-left: 2%;
+  margin-right: 17%;
+  margin-left: 3%;
+  padding-left: 0px;
 }
 
 .image-14 {
@@ -1191,8 +1192,6 @@
 .section-15 {
   margin-right: 4%;
   margin-left: 4%;
-  background-image: -webkit-linear-gradient(270deg, #990a0a, #990a0a);
-  background-image: linear-gradient(180deg, #990a0a, #990a0a);
   font-family: Roboto, sans-serif;
   font-weight: 700;
 }
@@ -1241,11 +1240,13 @@
 }
 
 .image-15 {
-  margin-top: 7%;
+  margin-top: 12%;
+  margin-left: 16%;
 }
 
 .image-16 {
-  margin-top: 3%;
+  margin-top: 8%;
+  margin-left: 15%;
 }
 
 .field-label-16 {
@@ -1291,7 +1292,10 @@
 }
 
 .image-17 {
-  border-style: solid;
+  margin-top: 9%;
+  margin-bottom: 1px;
+  margin-left: 8%;
+  border-style: none;
   border-width: 0.5px;
   border-color: hsla(0, 0%, 50%, .28);
 }
@@ -1313,6 +1317,114 @@
 }
 
 .heading-13 {
-  color: #fff;
+  color: #000;
+}
+
+.section-16 {
+  margin-right: 5%;
+  margin-left: 5%;
+  background-image: -webkit-linear-gradient(270deg, #fff, #fff);
+  background-image: linear-gradient(180deg, #fff, #fff);
+}
+
+.submit-button-16 {
+  float: right;
+  clear: none;
+  background-image: -webkit-linear-gradient(270deg, #fff, #fff);
+  background-image: linear-gradient(180deg, #fff, #fff);
+  color: #000;
+}
+
+.form-block-3 {
+  margin-top: 20px;
+  float: right;
+}
+
+.text-field-9 {
+  width: 100%;
+  height: 100%;
+}
+
+.field-label-22 {
+  display: block;
+  width: 20%;
+  height: 20%;
+  margin-top: -11%;
+  margin-left: 16%;
+  padding-top: 0px;
+  float: none;
+  clear: none;
+  font-family: Roboto, sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+  text-align: center;
+}
+
+.text-field-10 {
+  width: 11.5%;
+  height: 15%;
+  border-style: solid;
+  border-color: #fff #fff hsla(0, 0%, 50%, .39);
+  border-bottom-width: 1px;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 200;
+}
+
+.text-field-10.seatpicker {
+  width: 60%;
+}
+
+.text-field-11 {
+  width: 30%;
+  height: 32%;
+  margin-left: 16%;
+  border: 1px solid #fff;
+  font-family: Roboto, sans-serif;
+  font-weight: 200;
+}
+
+.image-18 {
+  display: block;
+  width: 70%;
+  height: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.section-17 {
+  background-image: -webkit-linear-gradient(270deg, #990a0a, #990a0a);
+  background-image: linear-gradient(180deg, #990a0a, #990a0a);
+}
+
+.submit-button-17 {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.image-19 {
+  margin-left: 2%;
+}
+
+.image-20 {
+  margin-left: 10%;
+}
+
+.image-21 {
+  margin-top: 6%;
+  margin-left: 18%;
+}
+
+.image-22 {
+  margin-left: 6%;
+}
+
+.image-23 {
+  margin-left: 15%;
+}
+
+.submit-button-18 {
+  width: 60%;
 }
 
