@@ -716,7 +716,7 @@
 
 .submit-button-6 {
   overflow: visible;
-  margin-top: -7px;
+  margin-top: -9px;
   margin-bottom: 0px;
   padding-top: 20px;
   padding-bottom: 23px;
@@ -1061,6 +1061,11 @@
 
 .submit-button-12 {
   display: block;
+  width: 100%;
+  margin-top: 10px;
+  margin-right: -37px;
+  padding-right: 0px;
+  padding-left: 0px;
   float: right;
 }
 
@@ -1241,12 +1246,12 @@
 
 .image-15 {
   margin-top: 12%;
-  margin-left: 16%;
+  margin-left: 13%;
 }
 
 .image-16 {
   margin-top: 8%;
-  margin-left: 15%;
+  margin-left: 13%;
 }
 
 .field-label-16 {
@@ -1258,7 +1263,7 @@
 .field-label-17 {
   width: 40%;
   margin-top: -25px;
-  margin-left: 82%;
+  margin-left: 98.5%;
   font-family: Roboto, sans-serif;
   font-weight: 400;
 }
@@ -1285,7 +1290,7 @@
 
 .field-label-21 {
   margin-top: -6%;
-  margin-left: 81%;
+  margin-left: 97%;
   padding-top: 0px;
   font-family: Roboto, sans-serif;
   font-weight: 400;
@@ -1426,5 +1431,146 @@
 
 .submit-button-18 {
   width: 60%;
+}
+
+.form-block-4 {
+  margin-top: 17px;
+  float: right;
+  clear: none;
+}
+
+.submit-button-19 {
+  margin-top: 5px;
+  margin-left: 17px;
+  padding-left: 0px;
+  background-image: -webkit-linear-gradient(270deg, #fff, #fff);
+  background-image: linear-gradient(180deg, #fff, #fff);
+  color: #000;
+}
+
+.field-label-23 {
+  margin-left: 20%;
+  font-family: Roboto, sans-serif;
+  font-weight: 200;
+}
+
+.field-label-23.test {
+  margin-left: 17%;
+}
+
+.field-label-23.test2 {
+  margin-left: 19%;
+}
+
+.image-24 {
+  width: 12%;
+  height: 20%;
+  margin-left: 23%;
+}
+
+.block-quote-2 {
+  display: inline-block;
+}
+
+.block-quote-3 {
+  display: inline-block;
+}
+
+.paragraph-28 {
+  position: relative;
+  left: 16px;
+  top: -128px;
+  display: inline-block;
+  overflow: visible;
+  margin-bottom: 39px;
+  font-family: Roboto, sans-serif;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.paragraph-28.test1 {
+  left: -169px;
+  top: -99px;
+  padding-top: 0px;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.paragraph-28.test1.test2 {
+  left: -219px;
+  top: -75px;
+}
+
+.paragraph-28.test1.test2.test3 {
+  left: -300px;
+  top: -45px;
+}
+
+.paragraph-28.test1.test2.test3.test4 {
+  left: 245px;
+  top: -98px;
+}
+
+.paragraph-28.test1.test2.test3.test4.test5 {
+  left: 310px;
+}
+
+.paragraph-28.test1.test2.test3.test4.test5.test6 {
+  left: 100px;
+  top: -75px;
+}
+
+.paragraph-28.test1.test2.test3.test4.test5.test6.test7 {
+  left: 164px;
+}
+
+.paragraph-28.test1.test2.test3.test4.test5.test6.test7.test9 {
+  left: 36px;
+  top: -45px;
+}
+
+.paragraph-28.test1.test2.test3.test4.test5.test6.test7.test9.test10 {
+  left: 98px;
+}
+
+.submit-button-20 {
+  position: relative;
+  left: 588px;
+  top: -38px;
+  display: inline-block;
+  overflow: visible;
+  width: 47%;
+  height: 50%;
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+.section-18 {
+  margin-top: 2%;
+}
+
+.heading-14 {
+  width: 27%;
+  margin-top: 16px;
+  margin-left: 23%;
+}
+
+.heading-15 {
+  margin-top: -54px;
+  margin-left: 72%;
+}
+
+.submit-button-21 {
+  display: block;
+  width: 60%;
+  margin-right: auto;
+  margin-left: 23%;
+}
+
+.select-field {
+  display: block;
+  width: 30%;
+  margin-right: auto;
+  margin-left: 23%;
 }
 
