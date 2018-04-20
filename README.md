@@ -1,4 +1,4 @@
-# FOBdango
+# BGAnimation
 a replication of the functionalities and ideas of Fandango. Uses Amazon Web Services for security, MySQL databases, and hosting
 
   
