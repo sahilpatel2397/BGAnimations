@@ -700,6 +700,12 @@ public class BGAnimationPersistImpl {
 		}
 	}
 	
+	public static void deletePromo(String promoCode)throws SQLException {
+		String query = "DELETE FROM promocodes WHERE promocodes.code = '" +
+				promoCode + "';";
+		DBAccessInterface.create(query);
+	}
+	
 	public static ArrayList<Promotion> getAllPromotions() throws SQLException {
 		String query = "SELECT code, percentOff FROM promocodes WHERE TRUE;";
 		ResultSet rs = DBAccessInterface.retrieve(query);
