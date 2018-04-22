@@ -376,11 +376,11 @@ public class BGAnimationPersistImpl {
 		DBAccessInterface.delete(query);
 	}
 	
-	public static Movie getMovie(int movieId) 
+	public static Movie getMovie(String movieName) 
 		throws SQLException, RuntimeException {
 		String query = "SELECT movieId, title, director, cast, genre, " +
 		"description, bannerUrl, userRatings, mpaaRating FROM movie " +
-		"WHERE movie.movieId = " + movieId + ";";
+		"WHERE title = " + movieName + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		
 		if (rs.next()) {
