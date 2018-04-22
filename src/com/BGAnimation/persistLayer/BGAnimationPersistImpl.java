@@ -393,6 +393,23 @@ public class BGAnimationPersistImpl {
 			throw new RuntimeException(DB_ERR_MSG);
 		}
 	}
+	
+	public static ArrayList<Movie> getMoviesByGenre(String genre)throws SQLException, RuntimeException {
+		String query = "SELECT movieId, title, director, cast, genre, " +
+		"description, bannerUrl, userRatings, mpaaRating FROM movie " +
+		"WHERE genre = " + genre + ";";
+		ResultSet rs = DBAccessInterface.retrieve(query);
+		ArrayList<Movie> movieList = new ArrayList<Movie>();
+		
+		while (rs.next()) {
+			movieList.add(new Movie(rs.getInt("movieId"), rs.getString("title"),
+				rs.getString("director"), rs.getString("cast"),
+				rs.getString("genre"), rs.getString("description"),
+				rs.getString("bannerUrl"), rs.getFloat("userRatings"),
+				rs.getString("mpaaRating")));
+		} 
+		return movieList;
+	}
 /*	
 	public static ArrayList<Movie> getAllMovies() throws SQLException {
 		String query = "SELECT movieId FROM movie WHERE TRUE;"; // for this query, give me all the movie IDs
