@@ -384,7 +384,7 @@ public class BGAnimationPersistImpl {
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		
 		if (rs.next()) {
-			return new Movie(movieId, rs.getString("title"),
+			return new Movie(rs.getInt("movieId"), movieName,
 				rs.getString("director"), rs.getString("cast"),
 				rs.getString("genre"), rs.getString("description"),
 				rs.getString("bannerUrl"), rs.getFloat("userRatings"),
@@ -393,7 +393,7 @@ public class BGAnimationPersistImpl {
 			throw new RuntimeException(DB_ERR_MSG);
 		}
 	}
-	
+/*	
 	public static ArrayList<Movie> getAllMovies() throws SQLException {
 		String query = "SELECT movieId FROM movie WHERE TRUE;"; // for this query, give me all the movie IDs
 		ResultSet rs = DBAccessInterface.retrieve(query);
@@ -405,7 +405,7 @@ public class BGAnimationPersistImpl {
 		
 		return movies;
 	}
-	
+*/	
 	public static Ticket getTicket(int ticketId) 
 		throws SQLException, RuntimeException {
 		

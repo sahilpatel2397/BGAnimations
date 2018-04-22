@@ -1,12 +1,16 @@
 package com.BGAnimation;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.*;
@@ -14,7 +18,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.JFrame;
 
+import com.BGAnimation.objectLayer.Movie;
+import com.BGAnimation.objectLayer.MovieReview;
 import com.BGAnimation.objectLayer.User;
 import com.BGAnimation.persistLayer.BGAnimationPersistImpl;
 import com.BGAnimation.persistLayer.EmailHandler;
@@ -131,7 +138,12 @@ public class Servlet extends HttpServlet {
 				if(activated){
 					u.setActivated();
 					BGAnimationPersistImpl.updateUser(u);
-					runTemplate(request,response,"myaccount");
+					if(u.getIsAdmin()==1) {
+						runTemplate(request,response,"mainadminpage");
+					}
+					else {
+						runTemplate(request,response,"myaccount");
+					}
 				}
 				else{
 					runTemplate(request,response,"activationentranceerror");
@@ -147,7 +159,6 @@ public class Servlet extends HttpServlet {
 			}
 		}
 		
-		
 		if (button.equals("My Account")){
 			if (null==session.getAttribute("user")){
 				try {
@@ -160,7 +171,14 @@ public class Servlet extends HttpServlet {
 				User user = (User)request.getSession().getAttribute("user");
 				root.put("NAME", user.getFirstName());
 				try {
-					runTemplate(request,response,"myaccount");
+					if (user.getIsAdmin()==1) {
+						runTemplate(request,response,"mainadminpage");
+					}
+					else {
+						//root.put("MovieName", b);
+						runTemplate(request,response,"myaccount");
+						
+					}
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -234,7 +252,7 @@ public class Servlet extends HttpServlet {
 				 if (activated){
 					 if (user1.getIsAdmin()==1){
 						 root.put("NAME", user1.getFirstName());
-						 runTemplate(request,response,"admin");
+						 runTemplate(request,response,"mainadminpage");
 					 }
 					 else{
 						 root.put("NAME", user1.getFirstName());
@@ -242,7 +260,7 @@ public class Servlet extends HttpServlet {
 					 }
 				 }
 				 else{
-					 runTemplate(request,response,"mainadminpage");   //change this
+					 runTemplate(request,response,"activationentrance");   //change this
 				 }
 				} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -291,6 +309,101 @@ public class Servlet extends HttpServlet {
 				
 			}
 		}
+		
+		
+		
+		//admin page buttons
+		if(button.equals("Manage Users")) {
+			try {
+				runTemplate(request,response,"manageusers");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if(button.equals("View Reports")) {
+			try {
+				runTemplate(request,response,"viewreports");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if(button.equals("Manage Movies")) {
+			try {
+				runTemplate(request,response,"managemovies");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if(button.equals("Manage Showtimes")) {
+			try {
+				runTemplate(request,response,"manageshowtimes");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if(button.equals("Manage Halls")) {
+			try {
+				runTemplate(request,response,"managehalls");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if(button.equals("Manage Promotion")) {
+			try {
+				runTemplate(request,response,"managepromotions");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if(button.equals("Send Mass Emails")) {
+			try {
+				runTemplate(request,response,"sendmassemails");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if(button.equals("Home Page")) {
+			response.sendRedirect("/finalProj/");
+		}
+		
+		if(button.equals("Movies")) {
+			try {
+				ArrayList<Movie> movies =  new ArrayList<Movie>();    // BGAnimationPersistImpl.getAllMovies();
+				ArrayList<String> imageURLs = new ArrayList<String>();
+				for (int index = 0; index<12; index++) {
+					imageURLs.add(movies.get(index).getbannerURL());
+				}
+				root.put("imageList",imageURLs);
+				runTemplate(request,response,"movie");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if (button.equals("Add Review")) {
+			String movieName = request.getParameter("movieName");
+			//Movie movie = BGAnimationPersistImpl.getMovie(movieName);
+			ArrayList<MovieReview> reviews =  new ArrayList<MovieReview>();   //BGAnimationPersistImpl.getReviewsForMovie(movie);
+			root.put("reviews", reviews);
+		}
+		
+		
+		
 		
 	}
 
