@@ -557,13 +557,13 @@ public class BGAnimationPersistImpl {
 		DBAccessInterface.delete(query);
 	}
 	public static ArrayList<MovieReview> getReviewsForMovie(Movie m) throws SQLException {
-		String query = "SELECT reviewId, userId, review, movie_movieId FROM " +
+		String query = "SELECT reviewId, email, review, movie_movieId FROM " +
 		"movieReview WHERE movieReview.movie_movieId = " + m.getMovieId() + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		ArrayList<MovieReview> r = new ArrayList<MovieReview>();
 		
 		while (rs.next()) {
-			r.add(new MovieReview(rs.getInt("reviewId"), rs.getInt("userId"),
+			r.add(new MovieReview(rs.getInt("reviewId"), rs.getInt("email"),
 				rs.getString("review"), rs.getInt("movie_movieId")));
 		}
 		
@@ -572,7 +572,7 @@ public class BGAnimationPersistImpl {
 	
 	public static void updateReview(MovieReview r) throws SQLException {
 		String query = "UPDATE movieReview "+
-			"SET userId = '"+r.getUserId()+"', "+
+			"SET email = '"+r.getEmail()+"', "+
 				"review = '"+r.getReview()+"', "+
 				"movie_movieId = '"+ r.getMovieId()+
 				"' WHERE reviewId = '"+ r.getReviewId()+";";
@@ -582,8 +582,8 @@ public class BGAnimationPersistImpl {
 	
 	public static void createNewReview(MovieReview r) throws SQLException {
 		String query = "INSERT INTO movieReview " + 
-		"(userId, review, movie_movieId) " +
-		" VALUES ('" + r.getUserId() + "', '" + r.getReview() + "', '" + 
+		"(email, review, movie_movieId) " +
+		" VALUES ('" + r.getEmail() + "', '" + r.getReview() + "', '" + 
 		r.getMovieId() + "');";
 		
 		DBAccessInterface.create(query);
