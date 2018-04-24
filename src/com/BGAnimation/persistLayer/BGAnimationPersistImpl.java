@@ -141,21 +141,21 @@ public class BGAnimationPersistImpl {
 				"isActivated = '"+u.getIsActivated()+"', "+
 				"password = '" + encryptedPasswordData[0] + "', " +
 				"salt = '" + encryptedPasswordData[1] +
-				"' WHERE userId = "+u.getUserID()+";";
+				"' WHERE email = "+u.getEmail()+";";
 				
 		DBAccessInterface.create(query);
 	}
 
 	public static void deleteUser(User u) throws SQLException {
-		String query = "DELETE FROM user WHERE user.userId = " + u.getUserID() + ";";
+		String query = "DELETE FROM user WHERE email = " + u.getEmail() + ";";
 		DBAccessInterface.delete(query);
 	}
 
 	public static boolean getUserBanStatus(User u) 
 		throws SQLException, RuntimeException {
 			
-		String query = "SELECT isBanned FROM user WHERE user.userId = " +
-			u.getUserID() + ";";
+		String query = "SELECT isBanned FROM user WHERE email = " +
+			u.getEmail() + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		
 		if (rs.next()) {
@@ -166,14 +166,14 @@ public class BGAnimationPersistImpl {
 	}
 
 	public static void banUser(User u) throws SQLException {
-		String query = "UPDATE user SET isBanned = True WHERE user.userId = " + 
-			u.getUserID()+";";
+		String query = "UPDATE user SET isBanned = True WHERE email = " + 
+			u.getEmail()+";";
 		DBAccessInterface.create(query);
 	}
 
 	public static void unbanUser(User u) throws SQLException {
-		String query = "UPDATE user SET isBanned = False WHERE user.userId = " + 
-			u.getUserID()+";";
+		String query = "UPDATE user SET isBanned = False WHERE email = " + 
+			u.getEmail()+";";
 		DBAccessInterface.create(query);
 	}
 	
@@ -207,19 +207,20 @@ public class BGAnimationPersistImpl {
 	}
 	
 	public static void setAdministrator(User u) throws SQLException {
-		String query = "UPDATE isAdmin SET isAdmin = TRUE where user.userId = " +
-			u.getUserID()+";";
+		String query = "UPDATE isAdmin SET isAdmin = TRUE where email = " +
+			u.getEmail()+";";
 		DBAccessInterface.create(query);
 	}
 	
 	public static void removeAdministrator(User u) throws SQLException {
-		String query = "UPDATE isAdmin SET isAdmin = FALSE where user.userId = " +
-			u.getUserID()+";";
+		String query = "UPDATE isAdmin SET isAdmin = FALSE where email = " +
+			u.getEmail()+";";
 		DBAccessInterface.create(query);
 	}
 	
 	/** Get data from creditcard table **/
 	
+	// @Stephen
 	public static ArrayList<Card> getAllCreditCardsWithUser(User u) throws SQLException {
 		String query = "SELECT creditcard, type, expirationDate, " +
 		"billingAddress, securityCode, user_userId FROM user JOIN creditcard " +
@@ -235,11 +236,12 @@ public class BGAnimationPersistImpl {
 		return cards;
 	}
 	
-	public static ArrayList<Card> getAllCreditCardsWithUser(int userId) 
+	/*
+	public static ArrayList<Card> getAllCreditCardsWithUser(User u) 
 			throws SQLException {
 			User u = new User(userId);
 			return getAllCreditCardsWithUser(u);
-		}
+		} */
 
 	public static void addCard(User u, Card c) throws SQLException {
 		String query = "INSERT INTO creditcard " + 
@@ -258,7 +260,8 @@ public class BGAnimationPersistImpl {
 		DBAccessInterface.delete(query);
 	}
 
-	public static ArrayList<BookingOrder> getAllBookingOrdersWithUser(int userId) 
+	// @Stephen
+	public static ArrayList<BookingOrder> getAllBookingOrdersWithUser(User u) 
 		throws SQLException {
 		String query = "SELECT bookingId, date, numTickets, promoCode, subtotal, " +
 		"tax, total, creditcard, user_userId WHERE user_userId = " + userId + ";";
@@ -293,6 +296,7 @@ public class BGAnimationPersistImpl {
 		return orders;
 	}
 	
+	// @Stephen
 	public static BookingOrder getBookingOrder(int bookingId) 
 		throws SQLException, RuntimeException {
 		
@@ -322,12 +326,14 @@ public class BGAnimationPersistImpl {
 		DBAccessInterface.create(query);
 	}
 	
+	// @Stephen
 	public static void deleteBookingOrder(BookingOrder b) throws SQLException {
 		String query = "DELETE FROM bookingOrder WHERE " +
 		"bookingOrder.bookingId = " + b.getBookingId() + ";";
 		DBAccessInterface.delete(query);
 	}
 	
+	// @Stephen
 	public static void updateBookingOrder(User u, Card c, BookingOrder b) 
 		throws SQLException {
 		String query = "UPDATE bookingOrder "+
@@ -353,7 +359,7 @@ public class BGAnimationPersistImpl {
 				"description = '"+m.getDescription()+"', "+
 				"bannerUrl = '"+m.getbannerURL()+"', "+
 				"ratings = '" + m.getRatings()+
-				"' WHERE movieId = "+ m.getMovieId()+";";
+				"' WHERE title = "+ m.getTitle()+";";
 				
 		DBAccessInterface.create(query);
 	}
@@ -371,7 +377,7 @@ public class BGAnimationPersistImpl {
 	
 	public static void deleteMovie(Movie m) throws SQLException {
 		String query = "DELETE FROM movie WHERE " +
-		"movie.movieId = " + m.getMovieId() + ";";
+		"title = " + m.getTitle() + ";";
 		
 		DBAccessInterface.delete(query);
 	}
@@ -423,6 +429,7 @@ public class BGAnimationPersistImpl {
 		return movies;
 	}
 */	
+	// @Stephen
 	public static Ticket getTicket(int ticketId) 
 		throws SQLException, RuntimeException {
 		
@@ -453,6 +460,7 @@ public class BGAnimationPersistImpl {
 		return tickets;
 	}
 	
+	// @Stephen
 	public static ArrayList<Ticket> getAllTicketsInBookingOrder(BookingOrder b) throws SQLException {
 		String query = "SELECT ticketId FROM ticket JOIN bookingOrder " +
 				"ON bookingOrder.bookingId = ticket.bookingOrder_bookingId " +
@@ -467,6 +475,7 @@ public class BGAnimationPersistImpl {
 		return tickets;
 	}
 	
+	// @Stephen
 	public static void updateTicket(Ticket t) throws SQLException {
 		String query = "UPDATE ticket "+
 			"SET showtime = '"+t.getShowTime()+"', "+
@@ -480,6 +489,7 @@ public class BGAnimationPersistImpl {
 		DBAccessInterface.create(query);
 	}
 	
+	// @Stephen - since we're no longer using ids, get rid of bookingOrder_bookingId? idk
 	public static void createNewTicket(Ticket t) throws SQLException {
 		String query = "INSERT INTO ticket " + 
 		"(showtime, seat, ticketType, purchasePrice, bookingOrder_bookingId, " +
@@ -491,6 +501,7 @@ public class BGAnimationPersistImpl {
 		DBAccessInterface.create(query);
 	}
 	
+	// @Stephen
 	public static void deleteTicket(Ticket t) throws SQLException {
 		String query = "DELETE FROM ticket WHERE " +
 		"ticket.ticketId = " + t.getTicketId()+ ";";
@@ -498,12 +509,12 @@ public class BGAnimationPersistImpl {
 		DBAccessInterface.delete(query);
 	}
 
-	public static ArrayList<Showtime> getShowtimesForMovie(int movieId) 
+	public static ArrayList<Showtime> getShowtimesForMovie(Movie m) 
 		throws SQLException, RuntimeException {
 			
 		String query = "SELECT showId FROM showtime JOIN movie "+
-		"ON showtime.movie_movieId = movie.movieId WHERE movie.movieId = " +
-		movieId +";";
+		"ON showtime.movie_movieId = movie.movieId WHERE movie.movieTitle = " +
+		m.getTitle() +";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		ArrayList<Showtime> st = new ArrayList<Showtime>();
 		
@@ -514,6 +525,7 @@ public class BGAnimationPersistImpl {
 		return st;
 	}
 	
+	// @Stephen
 	public static Showtime getShowtime(int showtimeId) 
 		throws SQLException, RuntimeException {
 		
@@ -530,6 +542,7 @@ public class BGAnimationPersistImpl {
 		}
 	}
 	
+	// @Stephen
 	public static void updateShowtime(Showtime s) throws SQLException {
 		String query = "UPDATE showtime "+
 			"SET hallId = '"+s.getHallId()+"', "+
@@ -541,6 +554,7 @@ public class BGAnimationPersistImpl {
 		DBAccessInterface.create(query);
 	}
 	
+	// @Stephen - since we're not using Ids anymore
 	public static void createNewShowtime(Showtime s) throws SQLException {
 		String query = "INSERT INTO showtime " + 
 		"(hallId, time, numSeats, movie_movieId) " +
@@ -550,6 +564,7 @@ public class BGAnimationPersistImpl {
 		DBAccessInterface.create(query);
 	}
 	
+	// @Stephen
 	public static void deleteShowtime(Showtime s) throws SQLException {
 		String query = "DELETE FROM showtime WHERE " +
 		"showtime.getshowId = " + s.getShowId()+ ";";
@@ -558,7 +573,7 @@ public class BGAnimationPersistImpl {
 	}
 	public static ArrayList<MovieReview> getReviewsForMovie(Movie m) throws SQLException {
 		String query = "SELECT reviewId, email, review, movie_movieId FROM " +
-		"movieReview WHERE movieReview.movie_movieId = " + m.getMovieId() + ";";
+		"movieReview WHERE movieReview.title = " + m.getTitle() + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		ArrayList<MovieReview> r = new ArrayList<MovieReview>();
 		
@@ -570,6 +585,7 @@ public class BGAnimationPersistImpl {
 		return r;
 	}
 	
+	// @Stephen
 	public static void updateReview(MovieReview r) throws SQLException {
 		String query = "UPDATE movieReview "+
 			"SET email = '"+r.getEmail()+"', "+
@@ -579,6 +595,8 @@ public class BGAnimationPersistImpl {
 				
 		DBAccessInterface.create(query);
 	}
+	
+	// This is where I stopped for determining what needs IDs and what doesn't
 	
 	public static void createNewReview(MovieReview r) throws SQLException {
 		String query = "INSERT INTO movieReview " + 
