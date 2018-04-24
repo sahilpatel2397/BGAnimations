@@ -529,13 +529,13 @@ public class BGAnimationPersistImpl {
 	public static Showtime getShowtime(int showtimeId) 
 		throws SQLException, RuntimeException {
 		
-		String query = "SELECT hallId, time, numSeats, movie_movieId "+
+		String query = "SELECT hallId, time, numSeats, numSeatsRemaining, movie_movieId "+
 		"FROM showtime WHERE showtime.showId = " + showtimeId + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		
 		if (rs.next()) {
 			return new Showtime(rs.getInt("hallId"),
-				rs.getDate("time"), rs.getInt("numSeats"),
+				rs.getDate("time"), rs.getInt("numSeats"), rs.getInt("numSeatsRemaining"),
 				rs.getInt("movie_movieId"));
 		} else {
 			throw new RuntimeException(DB_ERR_MSG);

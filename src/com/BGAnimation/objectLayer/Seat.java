@@ -2,21 +2,21 @@ package com.BGAnimation.objectLayer;
 
 public class Seat {
 	private int seatId;
+	private int seatNum;
 	private boolean isReserved;
 	private int showId;
-	private int hallId;
 	
-	public Seat(boolean isReserved, int showId, int hallId) {
+	public Seat(boolean isReserved, int showId, int seatNum) {
 		this.isReserved = isReserved;
 		this.showId = showId;
-		this.hallId = hallId;
+		this.seatNum = seatNum;
 	}
 	
-	public Seat(int seatId, boolean isReserved, int showId, int hallId) {
+	public Seat(int seatId, boolean isReserved, int showId, int seatNum) {
 		this.seatId = seatId;
 		this.isReserved = isReserved;
 		this.showId = showId;
-		this.hallId = hallId;
+		this.seatNum = seatNum;
 	}
 	
 	public Seat() { }
@@ -33,8 +33,8 @@ public class Seat {
 		return showId;
 	}
 	
-	public int getHallId() {
-		return hallId;
+	public int getSeatNum() {
+		return seatNum;
 	}
 	
 	public void setSeatReservation(boolean isReserved) {
@@ -45,7 +45,7 @@ public class Seat {
 		this.showId = showId;
 	}
 	
-	public void setHallId(int hallId) {
-		this.hallId = hallId;
+	public void setHallId(int seatNum) {
+		this.seatNum = seatNum;
 	}
 }

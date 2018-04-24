@@ -8,14 +8,16 @@ public class Showtime {
 	private int hallId;
 	private Date time;
 	private int numSeats;
+	private int numSeatsRemaining;
 	private int movieId;
 	
 	public Showtime() { }
 	
-	public Showtime(int hallId, Date time, int numSeats, int movieId) {
+	public Showtime(int hallId, Date time, int numSeats, int numSeatsRemaining, int movieId) {
 		this.hallId = hallId;
 		this.time = time;
 		this.numSeats = numSeats;
+		this.numSeatsRemaining = numSeatsRemaining;
 		this.movieId = movieId;
 	}
 	
@@ -29,6 +31,10 @@ public class Showtime {
 	
 	 public int getNumSeats() {
 		 return numSeats;
+	 }
+	 
+	 public int getNumSeatsRemaining() {
+		 return numSeatsRemaining;
 	 }
 	 
 	 public int getMovieId() {
@@ -49,6 +55,10 @@ public class Showtime {
 	 
 	 public void setNumSeats(int numSeats) {
 		 this.numSeats = numSeats;
+	 }
+	 
+	 public void setNumSeatsRemaining(int numSeatsRemaining) {
+		 this.numSeats = numSeatsRemaining;
 	 }
 	 
 	 public void setMovieId(int movieId) {
