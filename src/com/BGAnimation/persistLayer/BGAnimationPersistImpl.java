@@ -78,8 +78,8 @@ public class BGAnimationPersistImpl {
 	}
 	
 	public static boolean isActivated(User u) throws SQLException, RuntimeException {
-		String query = "SELECT isActivated FROM user WHERE user.userId = '" + 
-				u.getUserID() + "';";
+		String query = "SELECT isActivated FROM user WHERE email = '" + 
+				u.getEmail() + "';";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		
 		if (rs.next()) {
