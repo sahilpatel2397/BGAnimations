@@ -25,7 +25,7 @@
         <div class="w-icon-nav-menu"></div>
       </div>
       <div class="container-8 w-container"><a href="index.html" class="w-nav-brand"><img src="images/bganimations.png" width="250.5" class="image-4"></a>
-        <nav role="navigation" class="w-clearfix w-nav-menu"><a href="index.html" class="nav-link w-nav-link">Home</a><a href="#" class="nav-link w-nav-link">Movies</a><a href="myaccount.html" class="nav-link w-nav-link">My Account</a>
+        <nav role="navigation" class="w-clearfix w-nav-menu"><a href="index.html" class="nav-link w-nav-link">Home</a><a href="movie.html" class="nav-link w-nav-link">Movies</a><a href="myaccount.html" class="nav-link w-nav-link">My Account</a>
           <div class="form-block-2 w-clearfix w-form">
             <form id="email-form" name="email-form" data-name="Email Form" action="http://Servlet" class="form-3 w-clearfix"><input type="submit" value="Log Out" data-wait="Please wait..." class="submit-button-7 w-button"></form>
             <div class="w-form-done">

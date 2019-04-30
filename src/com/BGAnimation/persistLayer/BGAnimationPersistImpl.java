@@ -264,7 +264,7 @@ public class BGAnimationPersistImpl {
 	public static ArrayList<BookingOrder> getAllBookingOrdersWithUser(User u) 
 		throws SQLException {
 		String query = "SELECT bookingId, date, numTickets, promoCode, subtotal, " +
-		"tax, total, creditcard, user_userId WHERE user_userId = " + userId + ";";
+		"tax, total, creditcard, user_userId WHERE user_userId = " + u.getUserID() + ";";
 		ResultSet rs = DBAccessInterface.retrieve(query);
 		ArrayList<BookingOrder> bo = new ArrayList<BookingOrder>();
 		
@@ -586,7 +586,7 @@ public class BGAnimationPersistImpl {
 	}
 	
 	// @Stephen
-	public static void updateReview(MovieReview r) throws SQLException {
+	/*public static void updateReview(MovieReview r) throws SQLException {
 		String query = "UPDATE movieReview "+
 			"SET email = '"+r.getEmail()+"', "+
 				"review = '"+r.getReview()+"', "+
@@ -595,10 +595,10 @@ public class BGAnimationPersistImpl {
 				
 		DBAccessInterface.create(query);
 	}
-	
+	*/
 	// This is where I stopped for determining what needs IDs and what doesn't
 	
-	public static void createNewReview(MovieReview r) throws SQLException {
+	/*public static void createNewReview(MovieReview r) throws SQLException {
 		String query = "INSERT INTO movieReview " + 
 		"(email, review, movie_movieId) " +
 		" VALUES ('" + r.getEmail() + "', '" + r.getReview() + "', '" + 
@@ -606,7 +606,7 @@ public class BGAnimationPersistImpl {
 		
 		DBAccessInterface.create(query);
 	}
-	
+	*/
 	public static void deleteReview(MovieReview r) throws SQLException {
 		String query = "DELETE FROM movieReview WHERE " +
 		"movieReview.reviewId = " + r.getReviewId()+ ";";
@@ -681,7 +681,7 @@ public class BGAnimationPersistImpl {
 		}
 	}
 	
-	public static void updateSeat(Seat s) throws SQLException {
+	/*public static void updateSeat(Seat s) throws SQLException {
 		String query = "UPDATE hall "+
 			"SET isReserved = '"+s.getSeatReservation()+"', "+
 				"showId = '"+s.getShowId()+"', "+
@@ -690,8 +690,8 @@ public class BGAnimationPersistImpl {
 				
 		DBAccessInterface.create(query);
 	}
-	
-	public static void createNewSeat(Seat s) throws SQLException {
+	*/
+	/*public static void createNewSeat(Seat s) throws SQLException {
 		String query = "INSERT INTO seat " + 
 		"(isReserved, showId, hall_hallId) " +
 		" VALUES ('" + s.getSeatReservation() + "', '" + s.getShowId() + "', '" + 
@@ -699,7 +699,7 @@ public class BGAnimationPersistImpl {
 		
 		DBAccessInterface.create(query);
 	}
-	
+	*/
 	public static void deleteSeat(Seat s) throws SQLException {
 		String query = "DELETE FROM seat WHERE " +
 		"seat.seatId = " + s.getSeatId()+ ";";
